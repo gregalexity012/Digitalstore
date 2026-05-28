@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DIGISTOREX</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://zapupi.com/single-html-web-kit.js"></script>
   <style>
     /* LITE CSS - Optimized for Speed & New Color Palette */
     :root {
@@ -79,19 +80,43 @@
     .filter-btn { padding: 8px 16px; background: var(--white); border: 1px solid var(--sky-blue); border-radius: 20px; color: var(--teal); cursor: pointer; white-space: nowrap; transition: 0.3s;}
     .filter-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal);}
 
-    /* Products grid kept exactly like your original layout */
+    /* Unified Products Grid */
     .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
     @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
 
-    .product-card { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 12px; padding: 12px; cursor: pointer; position: relative; }
+    .product-card { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 12px; padding: 12px; cursor: pointer; position: relative; display: flex; flex-direction: column; height: 100%; }
     .product-badge { position: absolute; top: 8px; right: 8px; background: var(--navy); color: var(--white); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; z-index: 2;}
     .product-cat-badge { position: absolute; top: 8px; left: 8px; background: var(--teal); color: var(--white); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; z-index: 2;}
-    .product-image { width: 100%; height: 140px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; background: var(--beige); border: 1px solid var(--sky-blue); }
-    .product-title { font-size: 14px; font-weight: bold; color: var(--navy); margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .product-price-section { margin-bottom: 10px; }
-    .product-price-original { text-decoration: line-through; color: var(--teal); font-size: 12px; margin-right: 5px; }
-    .product-price-discount { color: var(--navy); font-weight: bold; }
-    .btn { flex: 1; padding: 8px; background: var(--teal); color: var(--white); border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s;}
+    
+    .product-image { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: var(--beige); border: 1px solid var(--sky-blue); flex-shrink: 0; }
+    
+    .product-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--navy);
+        margin-bottom: 5px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; 
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 40px; 
+        line-height: 20px; 
+    }
+    
+    .product-price-section {
+        margin-bottom: 10px;
+        min-height: 22px; 
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+    
+    .product-price-original { text-decoration: line-through; color: var(--teal); font-size: 12px; margin-right: 0; }
+    .product-price-discount { color: var(--navy); font-weight: bold; font-size: 15px;}
+    
+    .btn { flex: 1; padding: 10px 8px; background: var(--teal); color: var(--white); border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%;}
     .btn-secondary { background: var(--sky-blue); color: var(--navy); }
     .btn-free-download { background: var(--navy); color: var(--white); }
 
@@ -99,8 +124,9 @@
     .modal.active { display: flex; }
     .modal-content { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 12px; padding: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; }
     .modal-close { position: absolute; top: 15px; right: 15px; color: var(--navy); font-size: 24px; cursor: pointer; }
-    .modal-image { width: 100%; height: 200px; object-fit: contain; background: var(--beige); border-radius: 8px; margin-bottom: 15px; }
-    .modal-title { color: var(--navy); font-size: 20px; margin-bottom: 10px; }
+    
+    .modal-image { width: 100%; height: 200px; object-fit: contain; background: var(--beige); border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--sky-blue); padding: 5px;}
+    .modal-title { color: var(--navy); font-size: 20px; margin-bottom: 10px; font-weight: 800;}
     .modal-description { color: var(--teal); font-size: 14px; margin-bottom: 15px; line-height: 1.5; }
     .price-section { margin-bottom: 15px; padding: 15px; background: var(--beige); border-radius: 8px; border: 1px solid var(--sky-blue); }
 
@@ -109,7 +135,7 @@
     .input-group input { width: 100%; padding: 10px; background: var(--white); border: 1px solid var(--sky-blue); border-radius: 6px; color: var(--navy); }
 
     .order-card { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-    .download-btn { background: var(--teal); color: var(--white); border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; display: inline-block; text-decoration: none; text-align: center; flex: 1;}
+    .download-btn { background: var(--teal); color: var(--white); border: none; padding: 10px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; display: inline-block; text-decoration: none; text-align: center; flex: 1; width: 100%; font-size: 15px;}
   </style>
   
   <meta name="monetag" content="dfc9fa06e2c8fe2bd76edd4a64fd2a3a">
@@ -278,6 +304,17 @@
     window.currentUser = null; window.allProducts = []; window.cart = []; window.currentFilter = 'All';
     window.appliedCoupon = null;
 
+    // --- ZAP UPI Setup ---
+    document.addEventListener("DOMContentLoaded", function() {
+        if(typeof ZapUPI !== 'undefined') {
+            ZapUPI.setPaymentCallbacks({
+                onSuccess: function(orderId) { window.checkPendingPayments(); },
+                onFailed: function(orderId) { hideLoading(); showNotification("Payment Failed or Cancelled", "error"); },
+                onTimeout: function(orderId) { hideLoading(); showNotification("Payment Timed Out", "error"); }
+            });
+        }
+    });
+
     onAuthStateChanged(auth, (user) => {
       window.currentUser = user; 
       if (window.updateMenu) window.updateMenu(); 
@@ -286,9 +323,21 @@
       if (user && window.checkPendingPayments) window.checkPendingPayments();
     });
 
+    // EXACT Sorting logic - Newest First Fallback
     onValue(ref(db, 'products'), (snapshot) => {
       if (snapshot.exists() && typeof snapshot.val() === 'object') {
-        window.allProducts = Object.entries(snapshot.val()).map(([id, product]) => ({ id, ...product })).sort((a,b) => (a.rank || 999) - (b.rank || 999));
+        window.allProducts = Object.entries(snapshot.val()).map(([id, product]) => ({ id, ...product })).sort((a, b) => {
+  const hasRankA = a.rank !== undefined && a.rank !== null && a.rank !== "";
+  const hasRankB = b.rank !== undefined && b.rank !== null && b.rank !== "";
+  if (hasRankA && hasRankB) return Number(a.rank) - Number(b.rank);
+  if (hasRankA && !hasRankB) return -1;
+  if (!hasRankA && hasRankB) return 1;
+  // Newest first: createdAt timestamp use karo
+  const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+  const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+  if (dateB !== dateA) return dateB - dateA;
+  return b.id.localeCompare(a.id);
+});
         if (window.filterProducts) window.filterProducts(window.currentFilter);
       }
     }, (error) => {
@@ -359,7 +408,18 @@
       try {
         const snap = await window.dbGet(window.dbRef(window.db, 'products'));
         if (snap.exists() && typeof snap.val() === 'object') {
-          window.allProducts = Object.entries(snap.val()).map(([id, p]) => ({ id, ...p })).sort((a,b) => (a.rank || 999) - (b.rank || 999));
+          window.allProducts = Object.entries(snap.val()).map(([id, p]) => ({ id, ...p })).sort((a, b) => {
+  const hasRankA = a.rank !== undefined && a.rank !== null && a.rank !== "";
+  const hasRankB = b.rank !== undefined && b.rank !== null && b.rank !== "";
+  if (hasRankA && hasRankB) return Number(a.rank) - Number(b.rank);
+  if (hasRankA && !hasRankB) return -1;
+  if (!hasRankA && hasRankB) return 1;
+  // Newest first: createdAt timestamp use karo
+  const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+  const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+  if (dateB !== dateA) return dateB - dateA;
+  return b.id.localeCompare(a.id);
+});
           filterProducts(window.currentFilter);
         }
       } catch (e) { console.error("Products Load Error:", e); }
@@ -381,7 +441,7 @@
               ${!isFree && product.realPrice ? `<span class="product-price-original">${formatCurrency(product.realPrice)}</span>` : ''}
               <span class="product-price-discount">${isFree ? 'FREE' : formatCurrency(product.discountedPrice)}</span>
             </div>
-            <button class="btn ${isFree ? 'btn-free-download' : ''}" style="width:100%; pointer-events:none;">
+            <button class="btn ${isFree ? 'btn-free-download' : ''}" style="pointer-events:none;">
               ${isFree ? 'Get For Free' : 'View Details'}
             </button>
           </div>
@@ -443,7 +503,7 @@
                 btnGroup.innerHTML = `<button class="btn" style="background:var(--teal); color:var(--white);" onclick="closeModal('productModal'); switchMainTab('purchases');">View in Purchases</button>`;
             } else {
                 if (isFree) {
-                  btnGroup.innerHTML = `<button class="btn btn-free-download" style="width:100%;" onclick="window.open('${p.downloadLink}', '_blank')">Download Free</button>`;
+                  btnGroup.innerHTML = `<button class="btn btn-free-download" onclick="window.open('${p.downloadLink}', '_blank')">Download Free</button>`;
                 } else {
                   btnGroup.innerHTML = `<button class="btn" onclick="addToCart()">Add to Cart</button><button class="btn btn-secondary" onclick="buyNow()">Buy Now</button>`;
                 }
