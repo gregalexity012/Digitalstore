@@ -3,284 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DIGISTOREX</title>
+  <title>DIGISTOREX | Premium Digital Store</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://zapupi.com/single-html-web-kit.js"></script>
   <style>
-    /* LITE CSS - Optimized for Speed & New Color Palette */
+    /* MODERN CSS WITH DARK/LIGHT MODE VARIABLES */
     :root {
-      --navy: #2F4156;
-      --teal: #567C8D;
-      --sky-blue: #C8D9E6;
-      --beige: #F5EFEB;
-      --white: #FFFFFF;
+      /* Light Theme (Default) */
+      --bg-main: #f8f9fa;
+      --bg-surface: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --border-color: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --card-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      --header-bg: rgba(255, 255, 255, 0.85);
+    }
+
+    [data-theme="dark"] {
+      /* Dark Theme */
+      --bg-main: #0f172a;
+      --bg-surface: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --border-color: #334155;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --card-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --header-bg: rgba(30, 41, 59, 0.85);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--beige); color: var(--navy); min-height: 100vh; overflow-x: hidden; }
+    
+    body { 
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+      background: var(--bg-main); 
+      color: var(--text-main); 
+      min-height: 100vh; 
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(47, 65, 86, 0.9); z-index: 10000; display: none; align-items: center; justify-content: center; }
+    /* LOADING SPINNER */
+    .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 10000; display: none; align-items: center; justify-content: center; opacity: 0.95;}
     .loading-overlay.active { display: flex; }
-    .loading-spinner { width: 50px; height: 50px; border: 4px solid var(--sky-blue); border-top-color: var(--teal); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+    .loading-spinner { width: 50px; height: 50px; border: 4px solid var(--border-color); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text { color: var(--white); font-size: 16px; text-align: center;}
+    .loading-text { color: var(--text-main); font-size: 16px; text-align: center; font-weight: 600; letter-spacing: 1px;}
 
-    .notification-toast { position: fixed; top: 80px; right: 20px; background: var(--white); border: 1px solid var(--teal); border-radius: 8px; padding: 12px 16px; color: var(--navy); z-index: 10001; display: none; box-shadow: 0 4px 12px rgba(86,124,141,0.2); }
-    .notification-toast.show { display: block; animation: slideIn 0.3s ease; }
-    .notification-toast.success { border-color: var(--teal); color: var(--teal); }
-    .notification-toast.error { border-color: var(--navy); color: var(--navy); }
-    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    /* HEADER - GLASSMORPHISM */
+    .header { 
+      background: var(--header-bg); 
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color); 
+      padding: 15px 24px; 
+      position: sticky; 
+      top: 0; 
+      z-index: 1000; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .brand-section { display: flex; align-items: center; gap: 12px; }
+    .brand-icon { font-size: 24px; color: var(--primary); }
+    .brand-name { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: var(--text-main); }
+    .brand-name span { color: var(--primary); }
 
-    .header { background: var(--white); border-bottom: 1px solid var(--sky-blue); padding: 15px 20px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
-    .hamburger { width: 30px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
-    .hamburger span { width: 100%; height: 3px; background: var(--navy); border-radius: 2px; transition: 0.3s; }
-    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translateY(12px); }
-    .hamburger.active span:nth-child(2) { opacity: 0; }
-    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translateY(-12px); }
+    /* THEME TOGGLE BUTTON */
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+    .theme-toggle-btn:hover { background: var(--bg-surface); border-color: var(--primary); color: var(--primary); transform: rotate(15deg);}
 
-    .brand-section { display: flex; align-items: center; gap: 10px; }
-    .brand-name { font-size: 18px; font-weight: bold; color: var(--navy); }
-
-    .header-icon { width: 35px; height: 35px; background: var(--beige); border: 1px solid var(--sky-blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--teal); cursor: pointer; position: relative; }
-    .badge { position: absolute; top: -5px; right: -5px; background: var(--navy); color: var(--white); font-size: 10px; padding: 2px 6px; border-radius: 10px; }
-
-    .sidebar { position: fixed; top: 0; left: -280px; width: 260px; height: 100vh; background: var(--white); border-right: 1px solid var(--sky-blue); padding: 80px 20px 20px; transition: left 0.3s ease; z-index: 999; overflow-y: auto; }
-    .sidebar.active { left: 0; }
-    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(47, 65, 86, 0.7); display: none; z-index: 998; }
-    .sidebar-overlay.active { display: block; }
-    .menu-item { padding: 12px 15px; margin-bottom: 8px; background: var(--beige); border: 1px solid var(--sky-blue); border-radius: 8px; cursor: pointer; color: var(--navy); display: flex; align-items: center; gap: 10px; }
-    .menu-username { padding: 15px; margin-bottom: 15px; background: var(--teal); border: 1px solid var(--navy); border-radius: 8px; text-align: center; color: var(--white); font-weight: bold; }
-
-    .search-container { padding: 20px; max-width: 1200px; margin: 0 auto; }
-    .search-wrapper { position: relative; }
-    .search-bar { width: 100%; padding: 12px 40px 12px 15px; background: var(--white); border: 1px solid var(--sky-blue); border-radius: 8px; color: var(--navy); font-size: 15px; }
-    .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--teal); }
-
-    .cart-sidebar { position: fixed; top: 0; right: -350px; width: min(350px, 90vw); height: 100vh; background: var(--white); border-left: 1px solid var(--sky-blue); z-index: 999; transition: right 0.3s ease; overflow-y: auto; padding: 20px; }
-    .cart-sidebar.active { right: 0; }
-    .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--sky-blue); padding-bottom: 10px; }
-    .cart-title { font-size: 20px; color: var(--navy); font-weight: bold; }
-    .cart-close { cursor: pointer; color: var(--navy); font-size: 24px; }
-    .cart-item { display: flex; gap: 10px; padding: 10px; background: var(--beige); border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--sky-blue); }
-    .cart-item-image { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
-    .cart-item-details { flex: 1; }
-    .cart-item-title { font-size: 14px; color: var(--navy); font-weight: bold; }
-    .cart-item-price { color: var(--teal); font-weight: bold; }
-    .cart-item-remove { color: var(--navy); cursor: pointer; }
-    .cart-total { padding: 15px; background: var(--sky-blue); border-radius: 8px; margin: 15px 0; color: var(--navy); }
-    .cart-checkout-btn { width: 100%; padding: 12px; background: var(--teal); color: var(--white); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    /* SEARCH BAR */
+    .search-container { padding: 30px 20px 10px; max-width: 1200px; margin: 0 auto; }
+    .search-wrapper { position: relative; max-width: 600px; margin: 0 auto; }
+    .search-bar { width: 100%; padding: 15px 50px 15px 20px; background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: 30px; color: var(--text-main); font-size: 16px; transition: all 0.3s ease; box-shadow: var(--card-shadow); outline: none;}
+    .search-bar:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+    .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px;}
 
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    /* FILTERS */
+    .filter-slider { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: none; }
+    .filter-slider::-webkit-scrollbar { display: none; }
+    .filter-btn { padding: 10px 20px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 25px; color: var(--text-muted); font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; box-shadow: var(--card-shadow);}
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);}
+
+    /* PRODUCTS GRID */
+    .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 25px; } }
+    @media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    /* PRODUCT CARD */
+    .product-card { 
+      background: var(--bg-surface); 
+      border: 1px solid var(--border-color); 
+      border-radius: 16px; 
+      padding: 15px; 
+      cursor: pointer; 
+      position: relative; 
+      display: flex; 
+      flex-direction: column; 
+      height: 100%; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--card-shadow);
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); border-color: var(--primary); }
     
-    .main-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .main-tab-btn { flex: 1; padding: 12px; border: 1px solid var(--sky-blue); border-radius: 8px; background: var(--white); color: var(--teal); font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px;}
-    .main-tab-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
-
-    .filter-slider { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
-    .filter-btn { padding: 8px 16px; background: var(--white); border: 1px solid var(--sky-blue); border-radius: 20px; color: var(--teal); cursor: pointer; white-space: nowrap; transition: 0.3s;}
-    .filter-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal);}
-
-    /* Unified Products Grid */
-    .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-    @media (min-width: 768px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
-
-    .product-card { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 12px; padding: 12px; cursor: pointer; position: relative; display: flex; flex-direction: column; height: 100%; }
-    .product-badge { position: absolute; top: 8px; right: 8px; background: var(--navy); color: var(--white); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; z-index: 2;}
-    .product-cat-badge { position: absolute; top: 8px; left: 8px; background: var(--teal); color: var(--white); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; z-index: 2;}
+    .product-badge { position: absolute; top: 12px; right: 12px; background: var(--primary); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+    .product-cat-badge { position: absolute; top: 12px; left: 12px; background: var(--bg-main); color: var(--text-muted); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; z-index: 2; border: 1px solid var(--border-color);}
     
-    .product-image { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: var(--beige); border: 1px solid var(--sky-blue); flex-shrink: 0; }
+    .product-image { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; background: var(--bg-main); flex-shrink: 0; transition: opacity 0.3s; }
+    .product-card:hover .product-image { opacity: 0.9; }
     
     .product-title {
-        font-size: 14px;
-        font-weight: bold;
-        color: var(--navy);
-        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 8px;
         display: -webkit-box;
         -webkit-line-clamp: 2; 
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        min-height: 40px; 
-        line-height: 20px; 
+        min-height: 44px; 
+        line-height: 1.4; 
     }
     
     .product-price-section {
-        margin-bottom: 10px;
-        min-height: 22px; 
+        margin-bottom: 15px;
         display: flex;
         align-items: baseline;
-        gap: 5px;
+        gap: 8px;
         flex-shrink: 0;
     }
     
-    .product-price-original { text-decoration: line-through; color: var(--teal); font-size: 12px; margin-right: 0; }
-    .product-price-discount { color: var(--navy); font-weight: bold; font-size: 15px;}
+    .product-price-original { text-decoration: line-through; color: var(--text-muted); font-size: 13px; }
+    .product-price-discount { color: var(--text-main); font-weight: 800; font-size: 18px;}
     
-    .btn { flex: 1; padding: 10px 8px; background: var(--teal); color: var(--white); border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%;}
-    .btn-secondary { background: var(--sky-blue); color: var(--navy); }
-    .btn-free-download { background: var(--navy); color: var(--white); }
+    .btn { 
+      flex: 1; 
+      padding: 12px; 
+      background: var(--primary); 
+      color: #fff; 
+      border: none; 
+      border-radius: 10px; 
+      font-weight: 700; 
+      font-size: 14px;
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .btn-free-download { background: var(--text-main); color: var(--bg-surface); }
+    .product-card:hover .btn { background: var(--primary-hover); }
+    .product-card:hover .btn-free-download { opacity: 0.9; }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(47, 65, 86, 0.8); z-index: 2000; align-items: center; justify-content: center; padding: 15px; }
-    .modal.active { display: flex; }
-    .modal-content { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 12px; padding: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 15px; color: var(--navy); font-size: 24px; cursor: pointer; }
-    
-    .modal-image { width: 100%; height: 200px; object-fit: contain; background: var(--beige); border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--sky-blue); padding: 5px;}
-    .modal-title { color: var(--navy); font-size: 20px; margin-bottom: 10px; font-weight: 800;}
-    .modal-description { color: var(--teal); font-size: 14px; margin-bottom: 15px; line-height: 1.5; }
-    .price-section { margin-bottom: 15px; padding: 15px; background: var(--beige); border-radius: 8px; border: 1px solid var(--sky-blue); }
-
-    .input-group { margin-bottom: 15px; }
-    .input-group label { display: block; color: var(--navy); margin-bottom: 5px; font-size: 13px; font-weight: bold;}
-    .input-group input { width: 100%; padding: 10px; background: var(--white); border: 1px solid var(--sky-blue); border-radius: 6px; color: var(--navy); }
-
-    .order-card { background: var(--white); border: 1px solid var(--sky-blue); border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-    .download-btn { background: var(--teal); color: var(--white); border: none; padding: 10px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; display: inline-block; text-decoration: none; text-align: center; flex: 1; width: 100%; font-size: 15px;}
   </style>
-  
-  <meta name="monetag" content="dfc9fa06e2c8fe2bd76edd4a64fd2a3a">
 </head>
 <body>
 
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-content">
       <div class="loading-spinner"></div>
-      <div class="loading-text" id="loadingText">Loading...</div>
+      <div class="loading-text" id="loadingText">Loading Store...</div>
     </div>
   </div>
-  <div class="notification-toast" id="notificationToast"></div>
 
   <div class="header">
-    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </div>
     <div class="brand-section">
-      <div class="brand-name">DIGISTOREX</div>
+      <i class="fas fa-layer-group brand-icon"></i>
+      <div class="brand-name">DIGI<span>STOREX</span></div>
     </div>
-    <div class="header-icon" onclick="toggleCart()">
-      <i class="fas fa-shopping-cart"></i>
-      <span class="badge" id="cartBadge" style="display: none;">0</span>
-    </div>
-  </div>
-
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu()"></div>
-  <div class="sidebar" id="sidebar">
-    <div id="menuContent"></div>
-  </div>
-
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <div class="cart-title">Your Cart</div>
-      <div class="cart-close" onclick="toggleCart()">×</div>
-    </div>
-    <div id="cartItems"></div>
-    <div class="cart-total" id="cartTotal" style="display: none;">
-      Total: <span id="cartTotalAmount" style="color:var(--teal); font-weight:bold; float:right;">₹0</span>
-    </div>
-    <button class="cart-checkout-btn" id="cartCheckoutBtn" onclick="checkoutCart()" disabled>Proceed to Checkout</button>
+    <button class="theme-toggle-btn" id="themeToggle" title="Toggle Dark/Light Mode">
+      <i class="fas fa-moon"></i>
+    </button>
   </div>
 
   <div class="search-container">
     <div class="search-wrapper">
-      <input type="text" class="search-bar" id="searchBar" placeholder="Search products..." oninput="searchProducts()">
+      <input type="text" class="search-bar" id="searchBar" placeholder="Search for courses, ebooks, bundles..." oninput="searchProducts()">
       <i class="fas fa-search search-icon"></i>
     </div>
   </div>
 
   <div class="container">
-    
-    <div class="main-tabs">
-        <button class="main-tab-btn active" id="tabStore" onclick="switchMainTab('store')"><i class="fas fa-store"></i> Store</button>
-        <button class="main-tab-btn" id="tabPurchases" onclick="switchMainTab('purchases')"><i class="fas fa-box-open"></i> My Purchases</button>
-    </div>
-
     <div id="storeView">
       <div class="filter-slider" id="filterSlider">
-        <button class="filter-btn active" data-filter="All" onclick="filterProducts('All')">All</button>
-        <button class="filter-btn" data-filter="Ebook" onclick="filterProducts('Ebook')">Ebook</button>
-        <button class="filter-btn" data-filter="Reels Bundle" onclick="filterProducts('Reels Bundle')">Reels Bundle</button>
-        <button class="filter-btn" data-filter="Course" onclick="filterProducts('Course')">Course</button>
+        <button class="filter-btn active" data-filter="All" onclick="filterProducts('All')">All Items</button>
+        <button class="filter-btn" data-filter="Ebook" onclick="filterProducts('Ebook')">Ebooks</button>
+        <button class="filter-btn" data-filter="Reels Bundle" onclick="filterProducts('Reels Bundle')">Reels Bundles</button>
+        <button class="filter-btn" data-filter="Course" onclick="filterProducts('Course')">Courses</button>
       </div>
       <div id="productsGrid" class="products-grid"></div>
     </div>
-
-    <div id="purchasesView" style="display: none;">
-      <div id="purchasesList"></div>
-    </div>
-
   </div>
 
-  <div id="productModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal('productModal')">×</span>
-      <img id="modalImage" class="modal-image" src="" alt="Product">
-      <h2 id="modalTitle" class="modal-title"></h2>
-      <p id="modalDescription" class="modal-description"></p>
-      <div class="price-section">
-        <span id="modalPriceOriginal" class="product-price-original"></span>
-        <span id="modalPriceDiscount" class="product-price-discount" style="font-size:20px;"></span>
-      </div>
-      <div style="display:flex; gap:10px;" id="modalButtonGroup"></div>
-    </div>
-  </div>
+  <script>
+    const themeToggleBtn = document.getElementById('themeToggle');
+    // Check local storage or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+    }
 
-  <div id="checkoutModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal('checkoutModal')">×</span>
-      <h2 class="modal-title">Checkout Summary</h2>
-      
-      <div id="checkoutItems" style="margin-bottom: 15px;"></div>
-
-      <div class="coupon-section" style="background:var(--white); padding:15px; border-radius:8px; border:1px solid var(--sky-blue); margin-bottom:15px;">
-        <h4 style="color:var(--navy); margin-bottom:10px;"><i class="fas fa-ticket-alt"></i> Have a Coupon Code?</h4>
-        <div id="appliedCouponDisplay" style="display: none; justify-content:space-between; align-items:center; background:var(--sky-blue); padding:10px; border-radius:6px; color:var(--navy); border:1px solid var(--teal);"></div>
-        <div id="couponInputSection" style="display: flex; gap:10px;">
-          <input type="text" id="couponInput" placeholder="Enter code" style="flex:1; padding:10px; background:var(--white); border:1px solid var(--sky-blue); border-radius:6px; color:var(--navy); text-transform:uppercase;">
-          <button onclick="applyCoupon()" style="background:var(--teal); color:var(--white); border:none; padding:10px 15px; border-radius:6px; font-weight:bold; cursor:pointer;">Apply</button>
-        </div>
-        <div id="couponMessage" style="display:none; margin-top:10px; font-size:13px; padding:8px; border-radius:6px;"></div>
-      </div>
-
-      <div class="price-section">
-        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-          <span>Subtotal:</span> <span id="checkoutSubtotal">₹0</span>
-        </div>
-        <div id="discountRow" style="display:none; justify-content:space-between; margin-bottom:5px; color:var(--navy);">
-          <span>Discount:</span> <span id="checkoutDiscount">-₹0</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-weight:bold; color:var(--navy); font-size:18px; border-top:1px solid var(--sky-blue); padding-top:10px; margin-top:10px;">
-          <span>Total to Pay:</span> <span id="checkoutTotal">₹0</span>
-        </div>
-      </div>
-
-      <button class="cart-checkout-btn" onclick="proceedToPayment()">Pay Securely via UPI</button>
-    </div>
-  </div>
-
-  <div id="authModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal('authModal')">×</span>
-      <h2 class="modal-title" id="authTitle">Login</h2>
-      <div id="loginForm">
-        <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
-        <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="******"></div>
-        <button class="cart-checkout-btn" onclick="loginUser()">Login</button>
-        <p style="text-align:center; margin-top:15px; font-size:13px; color:var(--teal);">Don't have an account? <span style="color:var(--navy); font-weight:bold; cursor:pointer;" onclick="switchToSignup()">Sign up</span></p>
-      </div>
-      <div id="signupForm" style="display: none;">
-        <div class="input-group"><label>Name</label><input type="text" id="signupName" placeholder="Your Name"></div>
-        <div class="input-group"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
-        <div class="input-group"><label>Password</label><input type="password" id="signupPassword" placeholder="******"></div>
-        <button class="cart-checkout-btn" onclick="signupUser()">Create Account</button>
-        <p style="text-align:center; margin-top:15px; font-size:13px; color:var(--teal);">Already have an account? <span style="color:var(--navy); font-weight:bold; cursor:pointer;" onclick="switchToLogin()">Login</span></p>
-      </div>
-    </div>
-  </div>
+    themeToggleBtn.addEventListener('click', () => {
+      let currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+    });
+  </script>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js';
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js';
-    import { getDatabase, ref, set, get, push, remove, onValue, update } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js';
+    import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyCimIxZ2CwQn-FOETa7HoFpksbORIkgKjY",
@@ -293,156 +258,67 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getDatabase(app);
 
-    window.auth = auth; window.db = db; window.dbRef = ref; window.dbSet = set; window.dbRemove = remove;
-    window.dbGet = get; window.dbPush = push; window.dbOnValue = onValue; window.dbUpdate = update;
-    window.authCreateUser = createUserWithEmailAndPassword; window.authSignIn = signInWithEmailAndPassword;
-    window.authSignOut = signOut; window.authUpdateProfile = updateProfile;
+    window.db = db; window.dbRef = ref; window.dbGet = get; window.dbOnValue = onValue;
+    window.allProducts = []; window.currentFilter = 'All';
 
-    window.currentUser = null; window.allProducts = []; window.cart = []; window.currentFilter = 'All';
-    window.appliedCoupon = null;
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.classList.add('active');
 
-    // --- ZAP UPI Setup ---
-    document.addEventListener("DOMContentLoaded", function() {
-        if(typeof ZapUPI !== 'undefined') {
-            ZapUPI.setPaymentCallbacks({
-                onSuccess: function(orderId) { window.checkPendingPayments(); },
-                onFailed: function(orderId) { hideLoading(); showNotification("Payment Failed or Cancelled", "error"); },
-                onTimeout: function(orderId) { hideLoading(); showNotification("Payment Timed Out", "error"); }
-            });
-        }
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      window.currentUser = user; 
-      if (window.updateMenu) window.updateMenu(); 
-      if (window.loadProducts) window.loadProducts(); 
-      if (window.loadCartFromStorage) window.loadCartFromStorage();
-      if (user && window.checkPendingPayments) window.checkPendingPayments();
-    });
-
-    // EXACT Sorting logic - Newest First Fallback
+    // Fetch Products Realtime
     onValue(ref(db, 'products'), (snapshot) => {
       if (snapshot.exists() && typeof snapshot.val() === 'object') {
         window.allProducts = Object.entries(snapshot.val()).map(([id, product]) => ({ id, ...product })).sort((a, b) => {
-  const hasRankA = a.rank !== undefined && a.rank !== null && a.rank !== "";
-  const hasRankB = b.rank !== undefined && b.rank !== null && b.rank !== "";
-  if (hasRankA && hasRankB) return Number(a.rank) - Number(b.rank);
-  if (hasRankA && !hasRankB) return -1;
-  if (!hasRankA && hasRankB) return 1;
-  // Newest first: createdAt timestamp use karo
-  const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-  const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-  if (dateB !== dateA) return dateB - dateA;
-  return b.id.localeCompare(a.id);
-});
+          const hasRankA = a.rank !== undefined && a.rank !== null && a.rank !== "";
+          const hasRankB = b.rank !== undefined && b.rank !== null && b.rank !== "";
+          if (hasRankA && hasRankB) return Number(a.rank) - Number(b.rank);
+          if (hasRankA && !hasRankB) return -1;
+          if (!hasRankA && hasRankB) return 1;
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          if (dateB !== dateA) return dateB - dateA;
+          return b.id.localeCompare(a.id);
+        });
         if (window.filterProducts) window.filterProducts(window.currentFilter);
       }
+      loadingOverlay.classList.remove('active');
     }, (error) => {
-      console.warn("Real-time product listener blocked by DB rules:", error);
+      console.warn("Real-time product listener error:", error);
+      loadingOverlay.classList.remove('active');
     });
   </script>
 
   <script>
-    function showLoading(text = 'Loading...') {
-      document.getElementById('loadingText').textContent = text;
-      document.getElementById('loadingOverlay').classList.add('active');
-    }
-    function hideLoading() { document.getElementById('loadingOverlay').classList.remove('active'); }
-    function showNotification(msg, type = 'success') {
-      const toast = document.getElementById('notificationToast');
-      toast.textContent = msg; toast.className = `notification-toast show ${type}`;
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
     function formatCurrency(amt) { return '₹' + parseFloat(amt).toLocaleString('en-IN'); }
-    
     function escapeHtml(text) { 
         if(!text) return ''; 
         const div = document.createElement('div'); div.textContent = text; return div.innerHTML; 
     }
 
-    function toggleMenu() {
-      document.getElementById('hamburger').classList.toggle('active');
-      document.getElementById('sidebar').classList.toggle('active');
-      document.getElementById('sidebarOverlay').classList.toggle('active');
-    }
-
-    function switchMainTab(tab) {
-      const btnStore = document.getElementById('tabStore');
-      const btnPurch = document.getElementById('tabPurchases');
-      const viewStore = document.getElementById('storeView');
-      const viewPurch = document.getElementById('purchasesView');
-
-      if (tab === 'store') {
-        btnStore.classList.add('active'); btnPurch.classList.remove('active');
-        viewStore.style.display = 'block'; viewPurch.style.display = 'none';
-      } else {
-        if (!window.currentUser) { showAuth(); showNotification("Login to view purchases", "error"); return; }
-        btnPurch.classList.add('active'); btnStore.classList.remove('active');
-        viewPurch.style.display = 'block'; viewStore.style.display = 'none';
-        renderPurchasesList(); 
-      }
-    }
-
-    window.updateMenu = function updateMenu() {
-      const menu = document.getElementById('menuContent');
-      if (window.currentUser) {
-        menu.innerHTML = `
-          <div class="menu-username">${window.currentUser.displayName || window.currentUser.email}</div>
-          <div class="menu-item" onclick="toggleMenu(); switchMainTab('store')"><i class="fas fa-home"></i> Home</div>
-          <div class="menu-item" onclick="toggleMenu(); switchMainTab('purchases')"><i class="fas fa-box-open"></i> My Purchases</div>
-          <div class="menu-item" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</div>
-        `;
-      } else {
-        menu.innerHTML = `
-          <div class="menu-item" onclick="toggleMenu(); switchMainTab('store')"><i class="fas fa-home"></i> Home</div>
-          <div class="menu-item" onclick="showAuth()"><i class="fas fa-sign-in-alt"></i> Login / Signup</div>
-        `;
-      }
-    }
-
-    window.loadProducts = async function loadProducts() {
-      if (window.allProducts.length === 0) showLoading();
-      try {
-        const snap = await window.dbGet(window.dbRef(window.db, 'products'));
-        if (snap.exists() && typeof snap.val() === 'object') {
-          window.allProducts = Object.entries(snap.val()).map(([id, p]) => ({ id, ...p })).sort((a, b) => {
-  const hasRankA = a.rank !== undefined && a.rank !== null && a.rank !== "";
-  const hasRankB = b.rank !== undefined && b.rank !== null && b.rank !== "";
-  if (hasRankA && hasRankB) return Number(a.rank) - Number(b.rank);
-  if (hasRankA && !hasRankB) return -1;
-  if (!hasRankA && hasRankB) return 1;
-  // Newest first: createdAt timestamp use karo
-  const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-  const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-  if (dateB !== dateA) return dateB - dateA;
-  return b.id.localeCompare(a.id);
-});
-          filterProducts(window.currentFilter);
-        }
-      } catch (e) { console.error("Products Load Error:", e); }
-      hideLoading();
-    }
-
     function displayProducts(products) {
       const grid = document.getElementById('productsGrid'); grid.innerHTML = '';
+      if(products.length === 0) {
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No products found in this category.</div>';
+          return;
+      }
+
       products.forEach(product => {
         const isFree = parseFloat(product.discountedPrice) === 0;
         const catBadge = (product.category && product.category !== 'All') ? `<div class="product-cat-badge">${escapeHtml(product.category)}</div>` : '';
+        
         grid.innerHTML += `
-          <div class="product-card" onclick="showProductDetail('${product.id}')">
+          <div class="product-card" onclick="window.location.href='${escapeHtml(product.downloadLink || '#')}'">
             ${catBadge}
-            ${isFree ? `<div class="product-badge" style="background:var(--teal); color:var(--white);">FREE</div>` : ''}
-            <img src="${escapeHtml(product.imageUrl)}" class="product-image" onerror="this.src='https://via.placeholder.com/300x160?text=No+Image'">
+            ${isFree ? `<div class="product-badge">FREE</div>` : ''}
+            <img src="${escapeHtml(product.imageUrl)}" class="product-image" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
             <div class="product-title">${escapeHtml(product.title || 'Untitled Product')}</div>
             <div class="product-price-section">
               ${!isFree && product.realPrice ? `<span class="product-price-original">${formatCurrency(product.realPrice)}</span>` : ''}
-              <span class="product-price-discount">${isFree ? 'FREE' : formatCurrency(product.discountedPrice)}</span>
+              <span class="product-price-discount">${isFree ? 'Free Download' : formatCurrency(product.discountedPrice)}</span>
             </div>
             <button class="btn ${isFree ? 'btn-free-download' : ''}" style="pointer-events:none;">
-              ${isFree ? 'Get For Free' : 'View Details'}
+              ${isFree ? '<i class="fas fa-download"></i> Get For Free' : '<i class="fas fa-bolt"></i> Buy Now'}
             </button>
           </div>
         `;
@@ -469,370 +345,6 @@
       }
       displayProducts(filtered);
     }
-
-    async function isPurchased(productId) {
-      if (!window.currentUser) return false;
-      try {
-        const snap = await window.dbGet(window.dbRef(window.db, `users/${window.currentUser.uid}/purchases`));
-        if (!snap.exists()) return false;
-        return Object.values(snap.val()).some(p => p.productId === productId);
-      } catch(e) { return false; }
-    }
-
-    async function showProductDetail(id) {
-      showLoading();
-      try {
-          const snap = await window.dbGet(window.dbRef(window.db, `products/${id}`));
-          hideLoading();
-          if (snap.exists()) {
-            const p = { id, ...snap.val() };
-            window.currentProduct = p;
-            
-            const purchased = await isPurchased(id);
-
-            document.getElementById('modalImage').src = p.imageUrl || 'https://via.placeholder.com/300x160?text=No+Image';
-            document.getElementById('modalTitle').textContent = p.title || 'Product Title';
-            document.getElementById('modalDescription').textContent = p.description || 'No description available.';
-            const isFree = parseFloat(p.discountedPrice) === 0;
-            document.getElementById('modalPriceOriginal').textContent = isFree ? '' : formatCurrency(p.realPrice);
-            document.getElementById('modalPriceDiscount').textContent = isFree ? 'FREE' : formatCurrency(p.discountedPrice);
-            
-            const btnGroup = document.getElementById('modalButtonGroup');
-            
-            if (purchased) {
-                btnGroup.innerHTML = `<button class="btn" style="background:var(--teal); color:var(--white);" onclick="closeModal('productModal'); switchMainTab('purchases');">View in Purchases</button>`;
-            } else {
-                if (isFree) {
-                  btnGroup.innerHTML = `<button class="btn btn-free-download" onclick="window.open('${p.downloadLink}', '_blank')">Download Free</button>`;
-                } else {
-                  btnGroup.innerHTML = `<button class="btn" onclick="addToCart()">Add to Cart</button><button class="btn btn-secondary" onclick="buyNow()">Buy Now</button>`;
-                }
-            }
-            document.getElementById('productModal').classList.add('active');
-          }
-      } catch(e) {
-          hideLoading(); showNotification('Error loading product details', 'error');
-      }
-    }
-
-    window.loadCartFromStorage = function loadCartFromStorage() { window.cart = JSON.parse(localStorage.getItem('cart') || '[]'); updateCartUI(); }
-    function saveCartToStorage() { localStorage.setItem('cart', JSON.stringify(window.cart)); }
-    function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); }
-    
-    function addToCart() {
-      if(!window.currentProduct) return;
-      window.cart.push({ id: window.currentProduct.id, title: window.currentProduct.title, price: window.currentProduct.discountedPrice, image: window.currentProduct.imageUrl });
-      saveCartToStorage(); updateCartUI(); showNotification('Added to cart!'); closeModal('productModal'); toggleCart();
-    }
-    
-    function buyNow() {
-      if(!window.currentProduct) return;
-      window.cart = [{ id: window.currentProduct.id, title: window.currentProduct.title, price: window.currentProduct.discountedPrice, image: window.currentProduct.imageUrl }];
-      saveCartToStorage(); updateCartUI(); closeModal('productModal'); checkoutCart();
-    }
-
-    function updateCartUI() {
-      const itemsDiv = document.getElementById('cartItems'); const badge = document.getElementById('cartBadge');
-      let total = 0; itemsDiv.innerHTML = '';
-      window.cart.forEach((item, i) => {
-        total += parseFloat(item.price);
-        itemsDiv.innerHTML += `
-          <div class="cart-item">
-            <img src="${escapeHtml(item.image)}" class="cart-item-image" onerror="this.src='https://via.placeholder.com/60'">
-            <div class="cart-item-details">
-              <div class="cart-item-title">${escapeHtml(item.title)}</div><div class="cart-item-price">${formatCurrency(item.price)}</div>
-            </div>
-            <div class="cart-item-remove" onclick="window.cart.splice(${i},1); saveCartToStorage(); updateCartUI();">×</div>
-          </div>`;
-      });
-      document.getElementById('cartTotalAmount').textContent = formatCurrency(total);
-      document.getElementById('cartTotal').style.display = total > 0 ? 'block' : 'none';
-      document.getElementById('cartCheckoutBtn').disabled = total === 0;
-      badge.textContent = window.cart.length; badge.style.display = window.cart.length ? 'block' : 'none';
-    }
-
-    async function applyCoupon() {
-      const couponCode = document.getElementById('couponInput').value.trim().toUpperCase();
-      if (!couponCode) { showCouponMessage('Enter a coupon code', 'error'); return; }
-
-      try {
-        showLoading('Validating Coupon...');
-        const snap = await window.dbGet(window.dbRef(window.db, 'coupons'));
-        hideLoading();
-        
-        if (!snap.exists()) { showCouponMessage('Invalid coupon', 'error'); return; }
-        
-        const coupons = snap.val();
-        let found = null, couponId = null;
-        
-        for (const [id, c] of Object.entries(coupons)) {
-          if (c.code === couponCode) { found = c; couponId = id; break; }
-        }
-
-        if (!found) { showCouponMessage('Invalid coupon code', 'error'); return; }
-        if (!found.isActive) { showCouponMessage('Coupon is inactive', 'error'); return; }
-        if (found.expiryDate && new Date(found.expiryDate).getTime() <= Date.now()) { showCouponMessage('Coupon expired', 'error'); return; }
-        if (found.usageLimit > 0 && (found.usedCount || 0) >= found.usageLimit) { showCouponMessage('Usage limit reached', 'error'); return; }
-
-        const subtotal = window.cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
-        if (found.minAmount > 0 && subtotal < found.minAmount) { showCouponMessage(`Min purchase: ₹${found.minAmount}`, 'error'); return; }
-
-        let discountAmt = 0;
-        if (found.discountType === 'percentage') {
-          discountAmt = (subtotal * found.discountValue) / 100;
-          if (found.maxDiscount > 0 && discountAmt > found.maxDiscount) discountAmt = found.maxDiscount;
-        } else {
-          discountAmt = found.discountValue;
-        }
-
-        window.appliedCoupon = { id: couponId, code: found.code, discount: discountAmt };
-        updateCheckoutTotals();
-        
-        document.getElementById('couponInputSection').style.display = 'none';
-        const display = document.getElementById('appliedCouponDisplay');
-        display.innerHTML = `<span><i class="fas fa-check-circle"></i> ${found.code} applied!</span> <span style="cursor:pointer; color:var(--navy); padding:0 5px;" onclick="removeCoupon()"><i class="fas fa-times"></i></span>`;
-        display.style.display = 'flex';
-        showNotification('Coupon applied!', 'success');
-      } catch (e) { hideLoading(); showCouponMessage('Error applying coupon', 'error'); }
-    }
-
-    function removeCoupon() {
-      window.appliedCoupon = null;
-      document.getElementById('couponInput').value = '';
-      document.getElementById('appliedCouponDisplay').style.display = 'none';
-      document.getElementById('couponInputSection').style.display = 'flex';
-      updateCheckoutTotals();
-      showNotification('Coupon removed');
-    }
-
-    function showCouponMessage(msg, type) {
-      const div = document.getElementById('couponMessage');
-      div.textContent = msg; div.style.display = 'block';
-      div.style.background = type === 'error' ? 'var(--sky-blue)' : 'var(--beige)';
-      div.style.color = type === 'error' ? 'var(--navy)' : 'var(--teal)';
-      div.style.border = `1px solid ${type === 'error' ? 'var(--navy)' : 'var(--teal)'}`;
-      setTimeout(() => div.style.display = 'none', 3000);
-    }
-
-    function updateCheckoutTotals() {
-      const subtotal = window.cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
-      document.getElementById('checkoutSubtotal').textContent = formatCurrency(subtotal);
-
-      if (window.appliedCoupon) {
-        document.getElementById('discountRow').style.display = 'flex';
-        document.getElementById('checkoutDiscount').textContent = `-${formatCurrency(window.appliedCoupon.discount)}`;
-        const total = Math.max(0, subtotal - window.appliedCoupon.discount);
-        document.getElementById('checkoutTotal').textContent = formatCurrency(total);
-      } else {
-        document.getElementById('discountRow').style.display = 'none';
-        document.getElementById('checkoutTotal').textContent = formatCurrency(subtotal);
-      }
-    }
-
-    function checkoutCart() {
-      if (!window.currentUser) { showAuth(); showNotification('Login required to purchase', 'error'); return; }
-      document.getElementById('cartSidebar').classList.remove('active');
-      
-      window.appliedCoupon = null;
-      document.getElementById('couponInput').value = '';
-      document.getElementById('appliedCouponDisplay').style.display = 'none';
-      document.getElementById('couponInputSection').style.display = 'flex';
-
-      updateCheckoutTotals();
-      document.getElementById('checkoutModal').classList.add('active');
-    }
-
-    async function proceedToPayment() {
-      const subtotal = window.cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
-      const discount = window.appliedCoupon ? window.appliedCoupon.discount : 0;
-      const total = Math.max(0, subtotal - discount);
-
-      if (total === 0) { showNotification("Total is 0. Please use free download.", "error"); return; }
-
-      try {
-        showLoading('Redirecting to Secure Payment...');
-        const zapOrderId = "ORD_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
-
-        const orderRef = window.dbPush(window.dbRef(window.db, 'orders'));
-        const orderId = orderRef.key;
-
-        const orderData = {
-            orderId: orderId,
-            zapOrderId: zapOrderId,
-            userId: window.currentUser.uid,
-            items: window.cart,
-            couponUsed: window.appliedCoupon ? window.appliedCoupon.code : null,
-            discountAmount: discount,
-            totalAmount: total,
-            status: 'pending',
-            createdAt: new Date().toISOString()
-        };
-
-        await window.dbSet(orderRef, orderData);
-        localStorage.setItem('pendingZapOrder', zapOrderId);
-        localStorage.setItem('pendingFbOrder', orderId);
-
-        const paymentData = {
-            zap_key: "zap213b31e2e4477c1b3e53031d838a6325",
-            order_id: zapOrderId,
-            amount: total.toString(),
-            customer_mobile: "9999999999", 
-            remark: "Premium Store Purchase",
-            success_url: window.location.href,
-            failed_url: window.location.href
-        };
-
-        const response = await fetch('https://pay.zapupi.com/api/create-order', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(paymentData)
-        });
-
-        const result = await response.json();
-
-        if (result.status === "success" || result.payment_url) {
-            if (window.appliedCoupon) {
-                const couponRef = window.dbRef(window.db, `coupons/${window.appliedCoupon.id}`);
-                window.dbGet(couponRef).then(snap => {
-                   if(snap.exists()) {
-                       window.dbUpdate(couponRef, { usedCount: (snap.val().usedCount || 0) + 1 });
-                   }
-                });
-            }
-
-            window.cart = []; saveCartToStorage(); updateCartUI();
-            window.location.href = result.payment_url;
-        } else {
-            hideLoading(); showNotification("Payment Initiation Failed", "error");
-        }
-      } catch (e) {
-        hideLoading(); showNotification('Gateway error', 'error');
-      }
-    }
-
-    window.checkPendingPayments = async function checkPendingPayments() {
-        const zapOrderId = localStorage.getItem('pendingZapOrder');
-        const fbOrderId = localStorage.getItem('pendingFbOrder');
-
-        if(zapOrderId && fbOrderId) {
-            showLoading('Verifying your payment...');
-            try {
-                const statusRes = await fetch('https://pay.zapupi.com/api/order-status', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ zap_key: "zap213b31e2e4477c1b3e53031d838a6325", order_id: zapOrderId })
-                });
-                const statusData = await statusRes.json();
-
-                if(statusData.status === "success" && statusData.data.status === "Success") {
-                    await window.dbUpdate(window.dbRef(window.db, `orders/${fbOrderId}`), { status: 'confirmed' });
-                    const orderSnap = await window.dbGet(window.dbRef(window.db, `orders/${fbOrderId}`));
-                    
-                    if(orderSnap.exists()) {
-                        const orderInfo = orderSnap.val();
-                        for(const item of orderInfo.items) {
-                            await window.dbSet(window.dbRef(window.db, `users/${window.currentUser.uid}/purchases/${fbOrderId}_${item.id}`), {
-                                orderId: fbOrderId, productId: item.id, purchasedAt: new Date().toISOString()
-                            });
-                        }
-                    }
-                    
-                    localStorage.removeItem('pendingZapOrder'); localStorage.removeItem('pendingFbOrder');
-                    showNotification('Payment Successful!', 'success');
-                    
-                    setTimeout(() => {
-                       hideLoading(); switchMainTab('purchases'); 
-                    }, 1000);
-                    return;
-                } else {
-                    showNotification('Payment was not completed.', 'error');
-                }
-            } catch(e) { console.error("Verification error", e); }
-            
-            localStorage.removeItem('pendingZapOrder'); localStorage.removeItem('pendingFbOrder');
-            hideLoading(); 
-        }
-    }
-
-    async function renderPurchasesList() {
-      const list = document.getElementById('purchasesList');
-      list.innerHTML = `<div style="text-align:center; color:var(--navy); padding:20px;">Loading purchases...</div>`;
-      
-      try {
-        const snap = await window.dbGet(window.dbRef(window.db, `users/${window.currentUser.uid}/purchases`));
-        list.innerHTML = '';
-        
-        if (snap.exists() && typeof snap.val() === 'object') {
-          const purchases = Object.entries(snap.val());
-          
-          for (const [purchaseKey, purchase] of purchases) {
-             const productSnap = await window.dbGet(window.dbRef(window.db, `products/${purchase.productId}`));
-             if(productSnap.exists()) {
-                 const product = productSnap.val();
-                 list.innerHTML += `
-                    <div class="order-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                       <div style="display:flex; gap:15px; align-items:center;">
-                          <img src="${escapeHtml(product.imageUrl)}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/60'">
-                          <div>
-                            <div style="color:var(--navy); font-weight:bold;">${escapeHtml(product.title || 'Product')}</div>
-                            <div style="color:var(--teal); font-size:12px;">Status: <span style="color:var(--teal); font-weight:bold;">Confirmed</span></div>
-                          </div>
-                       </div>
-                       
-                       <div style="display:flex; gap:10px; flex:1; justify-content:flex-end;">
-                           <a href="${escapeHtml(product.downloadLink || '#')}" target="_blank" class="download-btn">Download</a>
-                           <button class="download-btn" style="background:var(--navy); color:var(--white); flex:none; padding:8px 15px;" onclick="deletePurchase('${purchaseKey}')" title="Delete from history">
-                               <i class="fas fa-trash"></i>
-                           </button>
-                       </div>
-                    </div>
-                 `;
-             }
-          }
-        } else {
-          list.innerHTML = `<p style="color:var(--teal); text-align:center; padding:20px;">No purchases found.</p>`;
-        }
-      } catch(e) { list.innerHTML = `<p style="color:var(--navy); text-align:center;">Error loading purchases.</p>`; }
-    }
-
-    async function deletePurchase(purchaseKey) {
-      if (!window.currentUser) return;
-      if (confirm("Are you sure you want to remove this item from your history?")) {
-          showLoading('Removing item...');
-          try {
-              await window.dbRemove(window.dbRef(window.db, `users/${window.currentUser.uid}/purchases/${purchaseKey}`));
-              hideLoading(); showNotification('Item removed from purchases', 'success'); renderPurchasesList();
-          } catch (error) { hideLoading(); showNotification('Permission Denied', 'error'); }
-      }
-    }
-
-    function showAuth() { 
-        if (document.getElementById('sidebar').classList.contains('active')) { toggleMenu(); }
-        document.getElementById('authModal').classList.add('active'); 
-    }
-    
-    function switchToSignup() { document.getElementById('authTitle').innerText = 'Sign Up'; document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='block'; }
-    function switchToLogin() { document.getElementById('authTitle').innerText = 'Login'; document.getElementById('signupForm').style.display='none'; document.getElementById('loginForm').style.display='block'; }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-    async function loginUser() {
-      const e = document.getElementById('loginEmail').value, p = document.getElementById('loginPassword').value;
-      if(!e || !p) return showNotification('Fill all fields','error'); showLoading('Logging in...');
-      try { await window.authSignIn(window.auth, e, p); closeModal('authModal'); showNotification('Welcome back!'); } 
-      catch(err) { showNotification(err.message, 'error'); } hideLoading();
-    }
-
-    async function signupUser() {
-      const n = document.getElementById('signupName').value, e = document.getElementById('signupEmail').value, p = document.getElementById('signupPassword').value;
-      if(!n || !e || !p) return showNotification('Fill all fields','error'); showLoading('Creating account...');
-      try { 
-        const cred = await window.authCreateUser(window.auth, e, p); await window.authUpdateProfile(cred.user, { displayName: n });
-        closeModal('authModal'); showNotification('Account created!');
-      } catch(err) { showNotification(err.message, 'error'); } hideLoading();
-    }
-
-    async function logoutUser() {
-      showLoading(); await window.authSignOut(window.auth); hideLoading(); toggleMenu(); switchMainTab('store'); showNotification('Logged out');
-    }
-
-    window.onclick = e => { if(e.target.classList.contains('modal')) e.target.classList.remove('active'); }
   </script>
 </body>
 </html>
