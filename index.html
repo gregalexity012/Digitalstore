@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="google-site-verification" content="3SguqE5JGUE-UzfXqSf3VlHWGK7JCmuqv5Ll51kVSJI" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- ==================== SEO OPTIMIZATION START ==================== -->
   <title>DIGISTOREX | Premium Reels Bundle, AI Ebooks & Courses</title>
   <meta name="title" content="DIGISTOREX | Premium Reels Bundle, AI Ebooks & Courses">
-  <meta name="description" content="Welcome to Digistorex - India's largest premium digital store to download highly engaging viral Reels Bundles, AI Story Reels, Football & IPL Reels, and Ebooks like How to Earn with AI.">
-  <meta name="keywords" content="Digistorex, Reels Bundle, typography reels bundle, anime reels bundle, Football reels bundle, ipl reels bundle, mad scientist voice reels bundle, ai story reels bundle, talking object reels bundle, how to earn with ai ebook, Mega reels bundle, premium digital store">
+  <meta name="description" content="Download viral Reels Bundles including AI Talking Object, Skeleton Reels, Fruit Story Reels, Mad Scientist Voices, Typography, and Mega Reels Bundles.">
+  
+  <!-- The JS Auto Injector will add Firebase products to this keyword list automatically -->
+  <meta name="keywords" content="Digistorex, Reels Bundle, AI Talking Object Reels, How to Earn with AI, Typography Reels, Anime Reels, Skeleton Reels, AI Story Reels, IPL Reels, AI Generated Fruit Story Reels, Mad Scientist Voice Reels, Mega Reels Bundle">
+  
   <meta name="robots" content="index, follow">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="language" content="English">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://digistorex.com/">
+  <meta property="og:url" content="https://digistorex.vercel.app/">
   <meta property="og:title" content="DIGISTOREX | Premium Digital Products & Reels Bundles">
-  <meta property="og:description" content="Download the best viral Reels Bundles including Typography, Anime, AI Story, IPL, and more from Digistorex.">
+  <meta property="og:description" content="India's largest digital store for viral AI story reels, anime reels, IPL content, and money-making ebooks.">
   
   <!-- JSON-LD Schema Markup for Google -->
   <script type="application/ld+json">
@@ -26,9 +28,24 @@
     "@context": "https://schema.org",
     "@type": "Store",
     "name": "Digistorex",
-    "url": "https://digistorex.com/",
-    "description": "Premium digital store for viral Reels Bundles, Ebooks, and Courses.",
-    "keywords": "Digistorex, typography reels bundle, anime reels bundle, Football reels bundle, ipl reels bundle, mad scientist voice reels bundle, ai story reels bundle, talking object reels bundle, how to earn with ai ebook, Mega reels bundle"
+    "url": "https://digistorex.vercel.app/",
+    "description": "Premium digital store for viral Reels Bundles, Ebooks, and Courses. Featuring Mega Reels Bundles, AI Talking Objects, Mad Scientist Voices, and Anime content.",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Digital Products",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "AI Talking Object Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "How to Earn with AI Ebook" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Typography Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Anime Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Skeleton Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "AI Story Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "IPL Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "AI Generated Fruit Story Reels Bundle" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Mad Scientist Voice Reels" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Mega Reels Bundle" } }
+      ]
+    }
   }
   </script>
   <!-- ==================== SEO OPTIMIZATION END ==================== -->
@@ -63,141 +80,85 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body { 
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
-      background: var(--bg-main); 
-      color: var(--text-main); 
-      min-height: 100vh; 
-      overflow-x: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; transition: background-color 0.3s ease, color 0.3s ease; display: flex; flex-direction: column; }
     main { flex: 1; }
 
-    /* LOADING SPINNER */
+    /* SPINNER & HEADER */
     .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 10000; display: none; align-items: center; justify-content: center; opacity: 0.95;}
     .loading-overlay.active { display: flex; }
     .loading-spinner { width: 50px; height: 50px; border: 4px solid var(--border-color); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading-text { color: var(--text-main); font-size: 16px; text-align: center; font-weight: 600; letter-spacing: 1px;}
-
-    /* HEADER */
-    .header { 
-      background: var(--header-bg); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color); 
-      padding: 15px 24px; 
-      position: sticky; 
-      top: 0; 
-      z-index: 1000; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
     
+    .header { background: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); padding: 15px 24px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; transition: background-color 0.3s ease, border-color 0.3s ease; }
     .brand-section { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .brand-icon { font-size: 24px; color: var(--primary); }
     h1.brand-name { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: var(--text-main); margin: 0; }
     h1.brand-name span { color: var(--primary); }
 
-    .theme-toggle-btn {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      transition: all 0.3s ease;
-    }
+    .theme-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.3s ease; }
     .theme-toggle-btn:hover { background: var(--bg-surface); border-color: var(--primary); color: var(--primary); transform: rotate(15deg);}
 
     /* PAGES */
     #store-page { display: block; }
     #about-page { display: none; padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
 
-    /* SEARCH BAR */
+    /* SEARCH & FILTERS */
     .search-container { padding: 30px 20px 10px; max-width: 1200px; margin: 0 auto; }
     .search-wrapper { position: relative; max-width: 600px; margin: 0 auto; }
     .search-bar { width: 100%; padding: 15px 50px 15px 20px; background: var(--bg-surface); border: 2px solid var(--border-color); border-radius: 30px; color: var(--text-main); font-size: 16px; transition: all 0.3s ease; box-shadow: var(--card-shadow); outline: none;}
     .search-bar:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
     .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px;}
-
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-    /* FILTERS */
     .filter-slider { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: none; }
     .filter-slider::-webkit-scrollbar { display: none; }
     .filter-btn { padding: 10px 20px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 25px; color: var(--text-muted); font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; box-shadow: var(--card-shadow);}
     .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
     .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);}
 
-    /* PRODUCTS GRID - STRICTLY 2 COLUMNS */
-    .products-grid { 
-      display: grid; 
-      grid-template-columns: repeat(2, 1fr); 
-      gap: 20px; 
-    }
-
-    /* PRODUCT CARD */
-    .product-card { 
-      background: var(--bg-surface); 
-      border: 1px solid var(--border-color); 
-      border-radius: 18px; 
-      padding: 20px; 
-      cursor: pointer; 
-      position: relative; 
-      display: flex; 
-      flex-direction: column; 
-      height: 100%; 
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: var(--card-shadow);
-    }
+    /* GRID & CARDS (Strictly 2 Columns) */
+    .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .product-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; cursor: pointer; position: relative; display: flex; flex-direction: column; height: 100%; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--card-shadow); }
     .product-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); border-color: var(--primary); }
     
     .product-badge { position: absolute; top: 15px; right: 15px; background: var(--primary); color: #fff; padding: 5px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
-    .product-cat-badge { display: inline-block; align-self: flex-start; background: var(--bg-main); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; z-index: 2; border: 1px solid var(--border-color); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
+    
+    /* Category Badge - Strictly below image */
+    .product-cat-badge { display: inline-block; align-self: flex-start; background: var(--bg-main); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid var(--border-color); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
+    
     .product-image { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; background: var(--bg-main); flex-shrink: 0; transition: opacity 0.3s; }
     .product-card:hover .product-image { opacity: 0.9; }
-    
     .product-title { font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; min-height: 50px; line-height: 1.4; }
     .product-price-section { margin-bottom: 20px; display: flex; align-items: baseline; gap: 8px; flex-shrink: 0; }
     .product-price-original { text-decoration: line-through; color: var(--text-muted); font-size: 14px; }
     .product-price-discount { color: var(--text-main); font-weight: 800; font-size: 20px;}
-    
     .btn { flex: 1; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s ease; width: 100%; text-transform: uppercase; letter-spacing: 0.5px; }
     .btn-free-download { background: var(--text-main); color: var(--bg-surface); }
     .product-card:hover .btn { background: var(--primary-hover); }
     .product-card:hover .btn-free-download { opacity: 0.9; }
 
-    /* ABOUT PAGE STYLING */
+    /* ABOUT PAGE SEO CATALOG STYLING */
     .about-header { text-align: center; margin-bottom: 40px; }
     .about-header h2 { font-size: 32px; color: var(--primary); margin-bottom: 10px; font-weight: 800;}
     .about-header p { font-size: 16px; color: var(--text-muted); }
     
     .about-content-box { background: var(--bg-surface); padding: 30px; border-radius: 18px; border: 1px solid var(--border-color); box-shadow: var(--card-shadow); line-height: 1.8; color: var(--text-main); margin-bottom: 30px;}
-    .about-content-box h3 { margin-top: 20px; margin-bottom: 15px; color: var(--primary); font-size: 20px;}
-    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-    .about-tags span { background: var(--bg-main); color: var(--text-main); padding: 8px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid var(--border-color); }
     
+    .catalog-item { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed var(--border-color); }
+    .catalog-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .catalog-item h3 { color: var(--primary); font-size: 20px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .catalog-item p { margin-bottom: 10px; font-size: 15px; color: var(--text-muted); }
+    .catalog-item ul { list-style: none; padding-left: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .catalog-item ul li { background: var(--bg-main); padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; border: 1px solid var(--border-color); color: var(--primary); }
+
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; margin-bottom: 20px; }
+    .about-tags span { background: var(--bg-main); color: var(--text-main); padding: 8px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid var(--border-color); }
+
     .back-btn { display: inline-block; padding: 12px 25px; background: var(--primary); color: #fff; border-radius: 12px; font-weight: 600; cursor: pointer; text-decoration: none; transition: 0.3s; margin-top: 20px;}
     .back-btn:hover { background: var(--primary-hover); }
-
-    /* SIMPLE FOOTER */
     .simple-footer { padding: 25px 20px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 40px; font-size: 14px; color: var(--text-muted); }
     .simple-footer a { color: var(--primary); text-decoration: none; font-weight: 600; cursor: pointer; margin: 0 10px; }
-    .simple-footer a:hover { text-decoration: underline; }
 
-    /* Mobile query */
     @media (max-width: 480px) {
       .products-grid { gap: 10px; }
       .product-card { padding: 12px; }
@@ -209,6 +170,7 @@
       .product-cat-badge { padding: 3px 8px; font-size: 10px; margin-bottom: 6px; }
       .about-header h2 { font-size: 24px; }
       .about-content-box { padding: 20px; }
+      .catalog-item h3 { font-size: 18px; }
     }
   </style>
 </head>
@@ -252,7 +214,7 @@
       </div>
     </div>
 
-    <!-- ABOUT US PAGE (Hidden by default, massive SEO value) -->
+    <!-- ABOUT US PAGE -->
     <div id="about-page">
       <div class="about-header">
         <h2>About DIGISTOREX</h2>
@@ -260,37 +222,98 @@
       </div>
       
       <div class="about-content-box">
-        <p>Welcome to <strong>Digistorex</strong>, the ultimate destination for creators, marketers, and entrepreneurs. Our mission is to empower you with high-converting, ready-to-use digital assets that save you hundreds of hours of production time.</p>
+        <p style="margin-bottom: 30px; font-size: 16px;">Welcome to <strong>Digistorex</strong>, the ultimate destination for creators, marketers, and entrepreneurs. Explore our massive library of premium resources designed to explode your social media growth.</p>
         
-        <h3>Our Massive Library</h3>
-        <p>While we highlight our top-trending items on our homepage, Digistorex actually hosts an ever-expanding library of premium resources. Whether you are looking to explode your social media growth or master new AI skills, we have you covered.</p>
+        <h3>Trending Collections & Future Releases</h3>
+        <p>Our library is always expanding. Here are some of the evergreen keywords and bundles we host or plan to release:</p>
         
-        <h3>Explore Our Top Categories & Bundles:</h3>
+        <!-- ========================================== -->
+        <!-- 🟢 ADD NEW SEO KEYWORDS RIGHT BELOW THIS 🟢 -->
+        <!-- ========================================== -->
         <div class="about-tags">
-          <span>Typography Reels Bundle</span>
-          <span>Anime Reels Bundle</span>
-          <span>Football Reels Bundle</span>
-          <span>IPL Reels Bundle</span>
-          <span>Mad Scientist Voice Reels Bundle</span>
-          <span>AI Story Reels Bundle</span>
-          <span>Talking Object Reels Bundle</span>
-          <span>How to Earn with AI Ebook</span>
-          <span>Mega Reels Bundle</span>
-          <span>Motivational Shorts</span>
-          <span>Faceless YouTube Kits</span>
-          <span>Many other Reels Bundles </span>
+          <span>Fitness Reels Bundle</span>
+          <span>Motivation Shorts</span>
+          <span>Hindi Podcast Reels</span>
+          <span>Luxury Lifestyle Reels</span>
+          <span>Tech Gadget Reels</span>
+          <span>Devotional Reels</span>
+          <span>Startup Reels</span>
+          <span>Trading Reels Bundle</span>
+        </div>
+        <!-- ========================================== -->
+        <!-- 🟢 END OF KEYWORDS SECTION 🟢 -->
+        <!-- ========================================== -->
+
+        <hr style="border: 1px dashed var(--border-color); margin: 30px 0;">
+
+        <!-- Detailed SEO Catalog -->
+        <div class="catalog-item">
+          <h3>🗣️ AI Talking Object Reels Bundle</h3>
+          <p>Get a viral collection of AI Talking Object Reels featuring creative characters and engaging conversations. Perfect for creators looking to create entertaining content.</p>
+          <ul><li>AI Generated Content</li><li>HD Quality</li><li>Instant Download</li><li>Unlimited Usage</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>💰 How to Earn with AI</h3>
+          <p>Learn practical ways to generate income using AI tools and modern digital strategies. Learn. Apply. Earn. Grow.</p>
+          <ul><li>AI Tools Mastery</li><li>Practical Income Methods</li><li>Step-by-Step Learning</li><li>Beginner Friendly</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>✍️ Typography Reels Bundle</h3>
+          <p>Premium Typography Reels designed to maximize engagement with powerful text animations. Grow your audience instantly.</p>
+          <ul><li>Viral Text Animation</li><li>Mobile Friendly</li><li>Easy to Use</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>🌟 Anime Reels Bundle</h3>
+          <p>The ultimate Anime Reels Collection packed with trending clips and viral content. Ideal for anime theme pages.</p>
+          <ul><li>High Quality Anime</li><li>Trending Reels</li><li>Ready to Post</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>💀 Skeleton Reels Bundle</h3>
+          <p>Get a collection of funny Skeleton Reels perfect for viral meme and entertainment pages to boost reach.</p>
+          <ul><li>Unique Characters</li><li>Trending Skeleton Content</li><li>HD Quality</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>🤖 AI Story Reels Bundle</h3>
+          <p>A massive collection of AI-generated story reels designed to grab attention and increase watch time. Never run out of ideas again.</p>
+          <ul><li>Unique AI Story Content</li><li>Ready for IG & Shorts</li><li>Viral Concepts</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>🏏 IPL Reels Bundle</h3>
+          <p>Premium IPL Reels Collection for cricket lovers and sports content creators. Boost engagement with fans.</p>
+          <ul><li>Trending IPL Content</li><li>HD Quality</li><li>Viral Collection</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>🍓 AI Generated Fruit Story Reels Bundle</h3>
+          <p>Unlock a massive collection of AI Generated Fruit Story Reels packed with engaging storytelling. Create endless content without editing.</p>
+          <ul><li>Funny & Emotional Stories</li><li>Trending Concepts</li><li>Easy to Upload</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>🧪 Mad Scientist Voice Reels</h3>
+          <p>Get a collection of viral Mad Scientist Voice Reels ready to post on Instagram, YouTube Shorts & Facebook Reels.</p>
+          <ul><li>Unique Voiceovers</li><li>High Engagement</li><li>Ready-to-Upload</li></ul>
+        </div>
+
+        <div class="catalog-item">
+          <h3>🚀 MEGA Reels Bundle</h3>
+          <p>Get the ultimate collection of premium reels bundles in one powerful package. Includes Anime, AI Talking Objects, Monkey Vlogging, IPL, Football, Luxury Cars, Hindi Podcasts, USA Motivational, Typography, and Mad Scientist Reels.</p>
+          <ul><li>10+ Mega Collections</li><li>Lifetime Access</li><li>Save Hours of Creation</li><li>One-Time Payment</li></ul>
         </div>
         
-        <p style="margin-top: 20px;">We continuously update our store with the latest trends. From high-retention <strong>Mega Reels Bundles</strong> to in-depth guides like the <strong>How to Earn with AI ebook</strong>, Digistorex ensures you stay ahead of the algorithm.</p>
-        
-        <div style="text-align: center;">
+        <div style="text-align: center; margin-top: 40px;">
           <a class="back-btn" onclick="toggleAbout(false)"><i class="fas fa-arrow-left"></i> Back to Store</a>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- CLEAN FOOTER -->
   <footer class="simple-footer">
     <p>
       &copy; 2026 DIGISTOREX. All rights reserved. <br><br>
@@ -300,7 +323,6 @@
   </footer>
 
   <script>
-    // Theme Toggle Logic
     const themeToggleBtn = document.getElementById('themeToggle');
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -323,19 +345,17 @@
       }
     });
 
-    // Toggle Between Store and About Page
     function toggleAbout(showAbout) {
       const storePage = document.getElementById('store-page');
       const aboutPage = document.getElementById('about-page');
-      
       if (showAbout) {
         storePage.style.display = 'none';
         aboutPage.style.display = 'block';
-        window.scrollTo(0, 0); // Scroll to top when opening About
+        window.scrollTo(0, 0); 
       } else {
         storePage.style.display = 'block';
         aboutPage.style.display = 'none';
-        window.scrollTo(0, 0); // Scroll to top when going back to home
+        window.scrollTo(0, 0); 
       }
     }
   </script>
@@ -344,24 +364,27 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js';
     import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js';
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCimIxZ2CwQn-FOETa7HoFpksbORIkgKjY",
-      authDomain: "coursera-48548.firebaseapp.com",
-      databaseURL: "https://coursera-48548-default-rtdb.firebaseio.com",
-      projectId: "coursera-48548",
-      storageBucket: "coursera-48548.firebasestorage.app",
-      messagingSenderId: "598429439493",
-      appId: "1:598429439493:web:8eedc8465b329edd006e6c"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyCimIxZ2CwQn-FOETa7HoFpksbORIkgKjY", authDomain: "coursera-48548.firebaseapp.com", databaseURL: "https://coursera-48548-default-rtdb.firebaseio.com", projectId: "coursera-48548", storageBucket: "coursera-48548.firebasestorage.app", messagingSenderId: "598429439493", appId: "1:598429439493:web:8eedc8465b329edd006e6c" };
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    window.db = db; window.dbRef = ref; window.dbGet = get; window.dbOnValue = onValue;
     window.allProducts = []; window.currentFilter = 'All';
-
     const loadingOverlay = document.getElementById('loadingOverlay');
     loadingOverlay.classList.add('active');
+
+    // 🟢 SMART AUTO SEO INJECTOR FUNCTION 🟢
+    function updateSEO() {
+      if(window.allProducts.length === 0) return;
+      const productNames = window.allProducts.map(p => p.title).join(', ');
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (metaKeywords) {
+        let currentKeywords = metaKeywords.getAttribute('content');
+        // Check to avoid adding duplicates if firebase triggers twice
+        if (!currentKeywords.includes(window.allProducts[0]?.title)) {
+           metaKeywords.setAttribute('content', currentKeywords + ', ' + productNames);
+        }
+      }
+    }
 
     onValue(ref(db, 'products'), (snapshot) => {
       if (snapshot.exists() && typeof snapshot.val() === 'object') {
@@ -376,33 +399,27 @@
           if (dateB !== dateA) return dateB - dateA;
           return b.id.localeCompare(a.id);
         });
+        
+        // Trigger filters to show products
         if (window.filterProducts) window.filterProducts(window.currentFilter);
+        
+        // Trigger Auto SEO Injection
+        updateSEO();
       }
       loadingOverlay.classList.remove('active');
-    }, (error) => {
-      console.warn("Real-time product listener error:", error);
-      loadingOverlay.classList.remove('active');
-    });
+    }, (error) => { loadingOverlay.classList.remove('active'); });
   </script>
 
   <script>
     function formatCurrency(amt) { return '₹' + parseFloat(amt).toLocaleString('en-IN'); }
-    function escapeHtml(text) { 
-        if(!text) return ''; 
-        const div = document.createElement('div'); div.textContent = text; return div.innerHTML; 
-    }
+    function escapeHtml(text) { if(!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
     function displayProducts(products) {
       const grid = document.getElementById('productsGrid'); grid.innerHTML = '';
-      if(products.length === 0) {
-          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No products found in this category.</div>';
-          return;
-      }
-
+      if(products.length === 0) { grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No products found.</div>'; return; }
       products.forEach(product => {
         const isFree = parseFloat(product.discountedPrice) === 0;
         const catBadge = (product.category && product.category !== 'All') ? `<div class="product-cat-badge">${escapeHtml(product.category)}</div>` : '';
-        
         grid.innerHTML += `
           <div class="product-card" onclick="window.location.href='${escapeHtml(product.downloadLink || '#')}'">
             ${isFree ? `<div class="product-badge">FREE</div>` : ''}
@@ -416,8 +433,7 @@
             <button class="btn ${isFree ? 'btn-free-download' : ''}" style="pointer-events:none;">
               ${isFree ? '<i class="fas fa-download"></i> Get For Free' : '<i class="fas fa-bolt"></i> Buy Now'}
             </button>
-          </div>
-        `;
+          </div>`;
       });
     }
 
@@ -425,20 +441,15 @@
       window.currentFilter = filter;
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelector(`[data-filter="${filter}"]`)?.classList.add('active');
-      
       let filtered = window.allProducts;
-      if (filter !== 'All') {
-          filtered = filtered.filter(p => p.category === filter);
-      }
+      if (filter !== 'All') filtered = filtered.filter(p => p.category === filter);
       displayProducts(filtered);
     }
 
     function searchProducts() {
       const q = document.getElementById('searchBar').value.toLowerCase();
       let filtered = window.allProducts.filter(p => (p.title||'').toLowerCase().includes(q));
-      if (window.currentFilter !== 'All') {
-          filtered = filtered.filter(p => p.category === window.currentFilter);
-      }
+      if (window.currentFilter !== 'All') filtered = filtered.filter(p => p.category === window.currentFilter);
       displayProducts(filtered);
     }
   </script>
