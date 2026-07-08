@@ -301,7 +301,7 @@
           : '';
 
         grid.innerHTML += `
-          <div class="product-card" onclick="handleProductAction('${product.id}')">
+          <div class="product-card" onclick="window.location.href='${escapeHtml(product.downloadLink || '#')}'">
             ${isFree ? `<div class="product-badge">FREE</div>` : ''}
             <img src="${escapeHtml(product.imageUrl)}" class="product-image" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
             ${catBadge}
@@ -335,11 +335,7 @@
       const buyBtn = document.getElementById('modalBuyBtn');
       buyBtn.innerHTML = isFree ? '<i class="fas fa-download"></i> Get For Free' : '<i class="fas fa-bolt"></i> Buy Now';
       buyBtn.className = isFree ? 'btn modal-buy-btn btn-free-download' : 'btn modal-buy-btn';
-      
-      buyBtn.onclick = () => {
-        closeModal();
-        handleProductAction(product.id);
-      };
+      buyBtn.onclick = () => window.location.href = product.downloadLink || '#';
       
       document.getElementById('detailsModal').classList.add('active');
       document.body.style.overflow = 'hidden'; // Stop background scrolling
@@ -373,54 +369,6 @@
       if (window.currentFilter !== 'All') filtered = filtered.filter(p => p.category === window.currentFilter);
       displayProducts(filtered);
     }
-
-    // NEW FUNCTION: API & Payment Logic
-    window.handleProductAction = async function(productId) {
-      const product = window.allProducts.find(p => p.id === productId);
-      if(!product) return;
-
-      const isFree = parseFloat(product.discountedPrice) === 0;
-      
-      // Free Products: Direct Download
-      if(isFree) {
-        window.location.href = product.downloadLink || '#';
-        return;
-      }
-
-      // Paid Products: Vercel API Request
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      const loadingText = document.querySelector('.loading-text');
-      
-      loadingOverlay.classList.add('active');
-      if (loadingText) loadingText.innerText = 'Creating Secure Payment...';
-
-      try {
-        const response = await fetch("/api/create-order", {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json" 
-          },
-          body: JSON.stringify({
-            amount: product.discountedPrice,
-            title: product.title,
-            productId: product.id
-          })
-        });
-
-        const data = await response.json();
-        
-        // Redirect if API provides URL
-        if (data.payment_url) {
-          window.location.href = data.payment_url;
-        } else {
-          alert("Payment Error: " + (data.error || "Gateway issue. Please try again."));
-          loadingOverlay.classList.remove('active');
-        }
-      } catch (err) {
-        alert("Server error. Please check your connection or try again later.");
-        loadingOverlay.classList.remove('active');
-      }
-    };
   </script>
 </body>
 </html>
