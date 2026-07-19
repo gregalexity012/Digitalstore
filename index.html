@@ -117,12 +117,12 @@
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
     
-    /* 📱 MODAL MOBILE UI FIX: Height 100dvh for dynamic browser bars */
+    /* 📱 MODAL MOBILE UI FIX: Sticky footer & 100dvh height */
     #productModal, #checkoutModal { padding: 0; align-items: flex-start; }
     #productModal .modal-content, #checkoutModal .modal-content { 
         background: var(--surface-color); 
-        width: 100vw; 
-        height: 100dvh; /* Mobile Default Fix */
+        width: 100%; 
+        height: 100dvh; /* Phone address bar fix */
         max-width: 100vw; 
         max-height: 100dvh; 
         border-radius: 0; 
@@ -141,7 +141,7 @@
 
     .modal-scrollable { overflow-y: auto; flex: 1; padding-bottom: 20px; }
     
-    /* 📱 MODAL FOOTER FIX: Sticky at bottom, won't hide under scroll */
+    /* Sticky footer for buttons */
     .modal-footer { 
         padding: 16px; 
         background: var(--surface-color); 
@@ -336,7 +336,7 @@
     window.auth = firebase.auth(); 
     window.db = firebase.database();
 
-    window.currentUser = null; window.allProducts = []; window.cart = []; 
+    window.currentUser = null; window.allProducts = []; window.chronologicalProducts = []; window.cart = []; 
     window.currentFilter = 'All'; window.appliedCoupon = null;
 
     window.auth.onAuthStateChanged((user) => {
@@ -360,7 +360,22 @@
     window.formatCurrency = function(a) { return '₹' + parseFloat(a).toLocaleString('en-IN'); }
     window.escapeHtml = function(t) { if(!t) return''; const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
     window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
-    window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
+    
+    // CLOSE MODAL LOGIC (With URL Revert)
+    window.closeModal = function(id) { 
+        document.getElementById(id).classList.remove('active'); 
+        if(id === 'productModal') {
+            window.history.pushState(null, '', '/');
+        }
+    }
+
+    // POPSTATE LOGIC (When user presses physical back button on phone/browser)
+    window.addEventListener('popstate', function(event) {
+        const modal = document.getElementById('productModal');
+        if(modal.classList.contains('active')) {
+            modal.classList.remove('active');
+        }
+    });
 
     window.switchMainTab = function(tab) {
       document.getElementById('tabStore').classList.remove('active'); document.getElementById('tabPurchases').classList.remove('active');
@@ -432,31 +447,34 @@
       });
     }
 
-    // Dynamic URL Check & Load
+    // URL ROUTING & LOADING PRODUCTS
     window.loadProducts = async function() {
       if(window.allProducts.length === 0) window.showLoading();
       window.db.ref('products').once('value').then(s => {
           if(s.exists()){
               const data = s.val();
               window.allProducts = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+              
+              // Ensure chronological list is made for consistent numbering
+              window.chronologicalProducts = [...window.allProducts].sort((a, b) => {
+                  const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                  const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                  return dateA - dateB; 
+              });
+
               window.applyFilter();
 
-              // URL ROUTING LOGIC
+              // Check if loaded via direct link (e.g. site.com/1 or site.com/?id=1)
               const path = window.location.pathname.replace('/', '');
               const queryParams = new URLSearchParams(window.location.search);
               const productNum = parseInt(path) || parseInt(queryParams.get('id'));
 
               if (productNum && !isNaN(productNum) && productNum > 0) {
-                  const oldestFirst = [...window.allProducts].sort((a, b) => {
-                      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-                      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-                      return dateA - dateB; 
-                  });
-                  
-                  const targetProduct = oldestFirst[productNum - 1];
+                  const targetProduct = window.chronologicalProducts[productNum - 1];
                   
                   if (targetProduct) {
-                      window.showProductDetail(targetProduct.id);
+                      // false pass kiya taaki page load hote hi wapas pushState na ho
+                      window.showProductDetail(targetProduct.id, false);
                   } else {
                       window.showNotification("Product not found!", "error");
                   }
@@ -466,7 +484,8 @@
       }).catch(e => { window.hideLoading(); });
     }
 
-    window.showProductDetail = async function(id) {
+    // SHOW PRODUCT MODAL (Updated to handle URL pushState)
+    window.showProductDetail = async function(id, updateUrl = true) {
       window.showLoading();
       try {
           const s = await window.db.ref(`products/${id}`).once('value'); 
@@ -476,6 +495,14 @@
             const p = { id, ...s.val() }; window.currentProduct = p;
             let purchased = false;
             
+            // Push URL if clicked from grid
+            if(updateUrl && window.chronologicalProducts) {
+                const index = window.chronologicalProducts.findIndex(item => item.id === id) + 1;
+                if(index > 0) {
+                    window.history.pushState({modalOpen: true, id: id}, p.title, '/' + index);
+                }
+            }
+
             if(window.currentUser) { 
                 const ps = await window.db.ref(`users/${window.currentUser.uid}/purchases`).once('value'); 
                 if(ps.exists()) purchased = Object.values(ps.val()).some(x=>x.productId===id); 
@@ -652,7 +679,7 @@
     window.loginUser = async function() { const e=document.getElementById('loginEmail').value, p=document.getElementById('loginPassword').value; if(!e||!p)return; window.showLoading(); try{ await window.auth.signInWithEmailAndPassword(e, p); window.closeModal('authModal'); }catch(err){ window.showNotification(err.message.replace('Firebase: ',''), 'error'); } window.hideLoading(); }
     window.signupUser = async function() { const n=document.getElementById('signupName').value, e=document.getElementById('signupEmail').value, p=document.getElementById('signupPassword').value; if(!n||!e||!p)return; window.showLoading(); try{ const c = await window.auth.createUserWithEmailAndPassword(e, p); await c.user.updateProfile({displayName:n}); window.closeModal('authModal'); }catch(err){ window.showNotification(err.message.replace('Firebase: ',''), 'error'); } window.hideLoading(); }
     window.logoutUser = async function() { window.showLoading(); await window.auth.signOut(); window.hideLoading(); window.toggleMenu(); window.switchMainTab('store'); }
-    window.onclick = e => { if(e.target.classList.contains('modal')) e.target.classList.remove('active'); }
+    window.onclick = e => { if(e.target.classList.contains('modal')) window.closeModal(e.target.id); }
   </script>
 </body>
 </html>
