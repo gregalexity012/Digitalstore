@@ -134,7 +134,7 @@
 <body>
 
   <header class="header">
-    <a href="index.html" class="brand-section">
+    <a href="/" class="brand-section">
       <div class="brand-name">DigiStorex99</div>
     </a>
     <button class="theme-toggle-btn" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i></button>
@@ -157,7 +157,7 @@
     </div>
 
     <div style="padding: 0 20px; width: 100%; max-width: 300px; margin: 0 auto;">
-        <a href="index.html" class="btn">Explore Store <i class="fas fa-arrow-right"></i></a>
+        <a href="/" class="btn">Explore Store <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 
@@ -196,7 +196,7 @@
   </div>
 
   <footer class="footer">
-    <a href="index.html" class="footer-btn">
+    <a href="/" class="footer-btn">
         <i class="fas fa-home"></i> Back to Store
     </a>
     <p class="footer-text">© 2026 DigiStorex99. All Rights Reserved.</p>
@@ -264,17 +264,25 @@
           // Convert object to array
           let productArray = Object.keys(data).map(key => ({ id: key, ...data[key] }));
           
-          // 1. Separate Pinned and Unpinned products
+          // 1. Create Chronological array to get the exact ID number (1, 2, 3...)
+          // This matches the logic from index.html so the URL points to the exact same product
+          let chronologicalProducts = [...productArray].sort((a, b) => {
+              const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+              const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+              return dateA - dateB;
+          });
+
+          // 2. Separate Pinned and Unpinned products for slider display
           let pinnedProducts = productArray.filter(p => p.pinned === true || p.pinned === 'true');
           let normalProducts = productArray.filter(p => !(p.pinned === true || p.pinned === 'true'));
 
-          // 2. Fisher-Yates Shuffle for Normal products (Randomizes without repetition)
+          // 3. Fisher-Yates Shuffle for Normal products (Randomizes without repetition)
           for (let i = normalProducts.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [normalProducts[i], normalProducts[j]] = [normalProducts[j], normalProducts[i]];
           }
 
-          // 3. Final Array: Pinned first, then completely shuffled normal products
+          // 4. Final Array: Pinned first, then completely shuffled normal products
           let finalArray = [...pinnedProducts, ...normalProducts];
 
           let productsHTML = '';
@@ -288,8 +296,11 @@
             const displayPrice = isFree ? 'Free' : '₹' + parseFloat(finalPrice).toLocaleString('en-IN');
             const imageUrl = product.image || product.imageUrl || product.photoUrl || 'https://via.placeholder.com/260x260?text=No+Image';
             
+            // FIND EXACT NUMBER FOR URL ROUTING
+            const productNum = chronologicalProducts.findIndex(item => item.id === product.id) + 1;
+
             productsHTML += `
-              <a href="index.html" class="product-card">
+              <a href="/${productNum}" class="product-card">
                 ${isFree ? `<div style="position:absolute; top:12px; right:12px; background:var(--success); color:#fff; padding:2px 8px; border-radius:12px; font-size:10px; font-weight:800; z-index:2;">FREE</div>` : ''}
                 <div class="card-image-box">
                   <img src="${imageUrl}" alt="${title}" loading="lazy">
