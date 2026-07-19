@@ -2,216 +2,329 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <title>About Us | DIGISTOREX - Premium Reels Bundles</title>
-  <meta name="description" content="Discover Digistorex, India's top library for viral Reels Bundles, AI Ebooks, and digital assets. We help creators grow fast.">
-  <meta name="keywords" content="About Digistorex, Reels Bundle, AI Talking Object Reels, How to Earn with AI, Typography Reels, Anime Reels, Skeleton Reels, AI Story Reels, IPL Reels, Grow on YouTube, Grow on Instagram">
+  <title>About Us | DigiStorex99</title>
   
-  <link rel="canonical" href="https://digistorex.vercel.app/about.html" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Firebase v8 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 
   <style>
+    /* 🎨 EXACT COLOR THEME */
     :root {
-      --bg-main: #f6fbf8; --bg-surface: #ffffff; --text-main: #0f172a; --text-muted: #475569;
-      --primary: #047857; --primary-hover: #059669; --border-color: #d1fae5;
-      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
-      --header-bg: rgba(255, 255, 255, 0.85);
-      --coming-soon-bg: #fffbeb; --coming-soon-border: #fde68a; --coming-soon-text: #92400e;
+      --bg-color: #f9fafb; --surface-color: #ffffff; --text-main: #111827; --text-muted: #6b7280;
+      --border-color: #e5e7eb; --primary: #000000; --primary-hover: #374151; --primary-text: #ffffff;
+      --success: #10b981; --success-bg: #d1fae5; --danger: #ef4444; --danger-bg: #fee2e2; --warning: #f59e0b;
+      --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05); --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
     [data-theme="dark"] {
-      --bg-main: #050505; --bg-surface: #0a140f; --text-main: #f8fafc; --text-muted: #94a3b8;
-      --primary: #10b981; --primary-hover: #34d399; --border-color: #064e3b;
-      --header-bg: rgba(5, 5, 5, 0.85);
-      --coming-soon-bg: #1c1500; --coming-soon-border: #78350f; --coming-soon-text: #fcd34d;
+      --bg-color: #0f172a; --surface-color: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8;
+      --border-color: #334155; --primary: #ffffff; --primary-hover: #e2e8f0; --primary-text: #0f172a;
+      --success-bg: rgba(16,185,129,0.15); --danger-bg: rgba(239,68,68,0.15);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-    body { font-family: 'Segoe UI', sans-serif; background: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: background-color 0.15s ease-out, color 0.15s ease-out; }
+    body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; }
 
-    .header { background: var(--header-bg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-color); padding: 15px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-    .brand-section { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
-    .brand-icon { font-size: 24px; color: var(--primary); }
-    h1.brand-name { font-size: 22px; font-weight: 800; color: var(--text-main); margin: 0; }
-    h1.brand-name span { color: var(--primary); }
-    .theme-toggle-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    /* HEADER */
+    .header { background: var(--surface-color); border-bottom: 1px solid var(--border-color); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .brand-section { display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
+    .theme-toggle-btn { width: 36px; height: 36px; background: var(--bg-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; color: var(--text-main); font-size: 16px; }
 
-    .about-container { max-width: 900px; margin: 40px auto; padding: 0 20px; flex: 1; }
+    /* --- PRODUCT SLIDER --- */
+    .slider-wrapper { background: var(--bg-color); padding: 30px 0; text-align: center; overflow: hidden; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid var(--border-color); }
+    .slider-container { width: 100%; overflow: hidden; white-space: nowrap; position: relative; margin-bottom: 15px; }
+    
+    /* FIX: Animation is completely removed from default track, only applied via .scrolling class */
+    .slider-track { display: inline-flex; gap: 16px; padding: 10px 0; min-height: 250px; align-items: center; transform: translateX(0); }
+    .slider-track.scrolling { animation: scrollSlider var(--slider-speed, 45s) linear infinite; }
+    .slider-track.scrolling:hover { animation-play-state: paused; }
+    
+    @keyframes scrollSlider { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* SPEED CONTROLS */
+    .speed-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 25px; }
+    .speed-controls span { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-right: 4px; }
+    .speed-btn { background: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s ease; }
+    .speed-btn:hover { border-color: var(--text-main); color: var(--text-main); }
+    .speed-btn.active { background: var(--primary); color: var(--primary-text); border-color: var(--primary); }
+
+    /* PRODUCT CARD */
+    .product-card {
+      width: 240px;
+      background: var(--surface-color);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      display: inline-flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      white-space: normal; 
+      text-align: left;
+      padding: 8px;
+      position: relative;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--text-muted); }
+    
+    /* IMAGE BOX */
+    .card-image-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .card-image-box img { width: 100%; height: 100%; object-fit: contain; }
+    
+    /* PRICE SECTION */
+    .card-info { display: flex; flex-direction: column; flex-grow: 1; }
+    .card-title { color: var(--text-main); font-size: 13px; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; }
+    
+    .product-price-section { margin-top: auto; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;}
+    .product-price-original { text-decoration: line-through; color: var(--text-muted); font-size: 11px; }
+    .product-price-discount { color: var(--primary); font-weight: 800; font-size: 15px; }
+
+    /* BUTTONS */
+    .btn { width: 100%; padding: 12px; background: var(--primary); color: var(--primary-text); border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; text-decoration: none;}
+    .btn:active { transform: scale(0.98); }
+    .btn-free { background: var(--success); color: #fff; }
+    
+    /* LOADER */
+    .loader { border: 3px solid var(--border-color); border-top: 3px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin: 0 auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* ABOUT CONTENT */
+    .about-container { max-width: 900px; margin: 40px auto; padding: 0 16px; flex: 1; }
     .about-header { text-align: center; margin-bottom: 40px; }
-    .about-header h2 { font-size: 32px; color: var(--primary); margin-bottom: 10px; font-weight: 800; }
-
-    .about-content-box { background: var(--bg-surface); padding: 40px; border-radius: 18px; border: 1px solid var(--border-color); box-shadow: var(--card-shadow); line-height: 1.8; transition: background-color 0.15s ease-out, color 0.15s ease-out; }
-
-    .section-heading { font-size: 22px; font-weight: 800; color: var(--primary); margin: 35px 0 18px; padding-bottom: 8px; border-bottom: 2px solid var(--border-color); }
+    .about-header h2 { font-size: 26px; color: var(--text-main); margin-bottom: 8px; font-weight: 800; letter-spacing: -0.5px; }
+    .about-content-box { background: var(--surface-color); padding: 30px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); line-height: 1.6; }
+    .section-heading { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 30px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
     .section-heading:first-of-type { margin-top: 0; }
-
-    .catalog-item { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed var(--border-color); }
+    .catalog-item { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed var(--border-color); }
     .catalog-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .catalog-item h3 { color: var(--primary); font-size: 18px; margin-bottom: 6px; }
-    .catalog-item p { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
-
-    /* Coming Soon Box */
-    .coming-soon-box { background: var(--coming-soon-bg); border: 1px dashed var(--coming-soon-border); border-radius: 14px; padding: 20px 25px; margin-top: 30px; }
-    .coming-soon-box h3 { color: var(--coming-soon-text); font-size: 17px; margin-bottom: 10px; }
-    .coming-soon-box ul { padding-left: 20px; color: var(--coming-soon-text); font-size: 14.5px; line-height: 2; }
-    .coming-soon-box p { font-size: 14px; color: var(--coming-soon-text); margin-top: 12px; }
-    .coming-soon-box a { color: var(--primary); font-weight: 600; text-decoration: none; }
-
-    .back-btn { display: inline-block; padding: 12px 25px; background: var(--primary); color: #fff; border-radius: 12px; font-weight: 600; text-decoration: none; margin-top: 30px; text-align: center; transition: background 0.2s; }
-    .back-btn:hover { background: var(--primary-hover); }
-
-    .simple-footer { padding: 25px 20px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 40px; font-size: 14px; color: var(--text-muted); }
-    .simple-footer a { color: var(--primary); text-decoration: none; font-weight: 600; margin: 0 10px; }
-
-    @media (max-width: 480px) {
-      .about-content-box { padding: 20px; }
-      .about-header h2 { font-size: 24px; }
-    }
+    .catalog-item h3 { color: var(--text-main); font-size: 14px; margin-bottom: 6px; font-weight: 700; }
+    .catalog-item p { font-size: 13px; color: var(--text-muted); }
+    
+    .coming-soon-box { background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-top: 30px; }
+    .coming-soon-box h3 { color: var(--text-main); font-size: 14px; margin-bottom: 10px; font-weight: 700; }
+    .coming-soon-box ul { padding-left: 20px; color: var(--text-muted); font-size: 13px; line-height: 1.8; }
+    
+    .footer { margin-top: 50px; padding: 30px 20px; text-align: center; background: var(--surface-color); border-top: 1px solid var(--border-color); }
+    .footer-text { color: var(--text-muted); font-size: 13px; margin-top: 15px; }
+    .footer-btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background: var(--primary); color: var(--primary-text); padding: 14px 28px; border-radius: var(--radius-md); font-size: 15px; font-weight: 700; transition: 0.3s; }
   </style>
 </head>
 <body>
 
   <header class="header">
     <a href="index.html" class="brand-section">
-      <i class="fas fa-layer-group brand-icon"></i>
-      <h1 class="brand-name">DIGI<span>STOREX</span></h1>
+      <div class="brand-name">DigiStorex99</div>
     </a>
-    <button class="theme-toggle-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+    <button class="theme-toggle-btn" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i></button>
   </header>
+
+  <!-- FIREBASE DYNAMIC PRODUCT SLIDER -->
+  <div class="slider-wrapper">
+    <div class="slider-container">
+      <div class="slider-track" id="dynamicProductSlider">
+        <div class="loader"></div> <!-- Loading Animation -->
+      </div>
+    </div>
+    
+    <!-- Speed Controls -->
+    <div class="speed-controls" id="speedControls" style="display: none;">
+      <span>Speed:</span>
+      <button class="speed-btn" id="btnNormal">1x</button>
+      <button class="speed-btn active" id="btnFast">2x</button> <!-- Default 2x -->
+      <button class="speed-btn" id="btnVeryFast">3x</button>
+    </div>
+
+    <div style="padding: 0 20px; width: 100%; max-width: 300px; margin: 0 auto;">
+        <a href="index.html" class="btn">Explore Store <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
 
   <div class="about-container">
     <div class="about-header">
-      <h2>About DIGISTOREX</h2>
-      <p>India's Premium Digital Asset Library</p>
+      <h2>About DigiStorex99</h2>
+      <p style="color: var(--text-muted); font-size: 14px;">Your Premium Digital Asset Library</p>
     </div>
 
     <div class="about-content-box">
-      <p style="margin-bottom: 30px;">Welcome to <strong>Digistorex</strong>. We provide high-converting, ready-to-use digital assets that save you hundreds of hours. Below is our ever-expanding library of premium resources.</p>
+      <p style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px;">Welcome to <strong>DigiStorex99</strong>. We provide high-converting, ready-to-use digital assets that save you hundreds of hours. Below is our ever-expanding library of premium resources.</p>
 
-      <!-- REELS BUNDLES -->
-      <div class="section-heading">🎬 Reels Bundles</div>
-
+      <div class="section-heading">🎬 Trending Collections</div>
       <div class="catalog-item">
         <h3>🗣️ AI Talking Object Reels Bundle</h3>
         <p>A viral collection of AI Talking Object Reels featuring creative characters. Perfect for creators who want to go viral fast.</p>
       </div>
-
       <div class="catalog-item">
         <h3>✍️ Typography Reels Bundle</h3>
         <p>Premium Typography Reels designed to maximize engagement with powerful text animations and aesthetic visuals.</p>
       </div>
-
-      <div class="catalog-item">
-        <h3>🌟 Anime Reels Bundle</h3>
-        <p>The ultimate Anime Reels Collection packed with trending clips and viral content for anime lovers.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>💀 Skeleton Reels Bundle</h3>
-        <p>A collection of funny Skeleton Reels perfect for viral meme and entertainment pages.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>🤖 AI Story Reels Bundle</h3>
-        <p>A massive collection of AI-generated story reels designed to grab attention and increase watch time on Instagram and YouTube.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>🏏 IPL Reels Bundle</h3>
-        <p>Premium IPL Reels Collection for cricket lovers and sports content creators. Perfect for match day posts.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>🍓 AI Generated Fruit Story Reels Bundle</h3>
-        <p>A massive collection of AI Generated Fruit Story Reels packed with engaging storytelling and colorful visuals.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>🧪 Mad Scientist Voice Reels</h3>
-        <p>Viral Mad Scientist Voice Reels ready to post on Instagram and YouTube — unique, funny, and highly shareable.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>🌍 Motivational Reels Bundle</h3>
-        <p>High-quality motivational video reels with powerful quotes and cinematic backgrounds. Great for growing lifestyle pages.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>😂 Meme Reels Bundle</h3>
-        <p>A curated collection of trending meme reels to keep your audience laughing and coming back for more.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>🌙 Lo-Fi & Aesthetic Reels Bundle</h3>
-        <p>Chill, aesthetic reels perfect for lifestyle, study, and relaxation content pages — designed to rack up saves and shares.</p>
-      </div>
-
       <div class="catalog-item">
         <h3>🚀 MEGA Reels Bundle</h3>
         <p>Get the ultimate all-in-one collection of our premium reels bundles in one powerful, value-packed package.</p>
       </div>
 
-      <!-- Coming Soon Notice -->
       <div class="coming-soon-box">
-        <h3>⏳ Coming Soon to the Store</h3>
+        <h3>⏳ Coming Soon</h3>
         <ul>
           <li>🎭 AI Character Voice Reels Bundle</li>
           <li>🏋️ Fitness & Gym Reels Bundle</li>
           <li>🌐 Tech & AI Facts Reels Bundle</li>
-          <li>🎵 Trending Audio Reels Bundle</li>
         </ul>
-        <p>Note: Some bundles may not be available on the store yet — they are coming very soon! Stay tuned or contact us at <a href="mailto:digistorex99@zohomail.in">digistorex99@zohomail.in</a> for updates.</p>
-      </div>
-
-      <!-- EBOOKS -->
-      <div class="section-heading" style="margin-top: 45px;">📚 Premium Ebooks</div>
-
-      <div class="catalog-item">
-        <h3>💰 Earn with AI</h3>
-        <p>Learn practical, proven ways to generate real income using AI tools. From freelancing to digital products — this ebook covers it all for beginners and intermediate creators.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>📺 Grow on YouTube</h3>
-        <p>A step-by-step guide to building and growing a successful YouTube channel from scratch. Covers content strategy, SEO, thumbnails, and monetization tips.</p>
-      </div>
-
-      <div class="catalog-item">
-        <h3>📱 Grow on Instagram</h3>
-        <p>Master Instagram growth with this complete guide on Reels strategy, hashtags, posting schedules, and turning followers into customers.</p>
-      </div>
-
-      <div style="text-align: center;">
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Explore All Premium Reels Bundles & Ebooks</a>
       </div>
     </div>
   </div>
 
-  <footer class="simple-footer">
-    <p>&copy; 2026 DIGISTOREX. All rights reserved.<br><br>
-      <a href="index.html">Home</a> | <a href="about.html">About Us</a>
-    </p>
+  <footer class="footer">
+    <a href="index.html" class="footer-btn">
+        <i class="fas fa-home"></i> Back to Store
+    </a>
+    <p class="footer-text">© 2026 DigiStorex99. All Rights Reserved.</p>
   </footer>
 
   <script>
+    // --- 1. THEME TOGGLE LOGIC ---
     const themeToggleBtn = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+    const themeIcon = document.getElementById('themeIcon');
+    
+    if (document.documentElement.getAttribute('data-theme') === 'dark') {
+      themeIcon.className = 'fas fa-sun';
     }
+    
     themeToggleBtn.addEventListener('click', () => {
       if (document.documentElement.getAttribute('data-theme') === 'dark') {
-        document.documentElement.removeAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
-        themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+        themeIcon.className = 'fas fa-moon';
       } else {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
-        themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        themeIcon.className = 'fas fa-sun';
       }
     });
-  </script>
 
+    // --- 2. FIREBASE LOGIC, SORTING/SHUFFLING & SLIDER SPEED CONTROLS ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyCimIxZ2CwQn-FOETa7HoFpksbORIkgKjY",
+      authDomain: "coursera-48548.firebaseapp.com",
+      databaseURL: "https://coursera-48548-default-rtdb.firebaseio.com"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const database = firebase.database();
+    
+    const sliderTrack = document.getElementById('dynamicProductSlider');
+    const speedControls = document.getElementById('speedControls');
+    const btnNormal = document.getElementById('btnNormal');
+    const btnFast = document.getElementById('btnFast');
+    const btnVeryFast = document.getElementById('btnVeryFast');
+
+    // Default Speed 2x (45 seconds)
+    sliderTrack.style.setProperty('--slider-speed', '45s');
+
+    // Update Speed Function
+    function updateSpeed(seconds, activeBtn) {
+      sliderTrack.style.setProperty('--slider-speed', seconds);
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+      activeBtn.classList.add('active');
+    }
+
+    btnNormal.addEventListener('click', () => updateSpeed('90s', btnNormal));      // 1x Speed
+    btnFast.addEventListener('click', () => updateSpeed('45s', btnFast));          // 2x Speed (Default)
+    btnVeryFast.addEventListener('click', () => updateSpeed('25s', btnVeryFast));  // 3x Speed
+
+    // Fetch and Process Data
+    database.ref('products').once('value')
+      .then((snapshot) => {
+        const data = snapshot.val();
+        
+        if (data) {
+          // Convert object to array
+          let productArray = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+          
+          // 1. Separate Pinned and Unpinned products
+          let pinnedProducts = productArray.filter(p => p.pinned === true || p.pinned === 'true');
+          let normalProducts = productArray.filter(p => !(p.pinned === true || p.pinned === 'true'));
+
+          // 2. Fisher-Yates Shuffle for Normal products (Randomizes without repetition)
+          for (let i = normalProducts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [normalProducts[i], normalProducts[j]] = [normalProducts[j], normalProducts[i]];
+          }
+
+          // 3. Final Array: Pinned first, then completely shuffled normal products
+          let finalArray = [...pinnedProducts, ...normalProducts];
+
+          let productsHTML = '';
+          
+          // Generate HTML using the randomized array
+          finalArray.forEach(product => {
+            const title = product.title || product.name || 'Premium Bundle';
+            const finalPrice = product.discountedPrice || product.price || '0';
+            const originalPrice = product.realPrice || product.oldPrice || '';
+            const isFree = parseFloat(finalPrice) === 0;
+            const displayPrice = isFree ? 'Free' : '₹' + parseFloat(finalPrice).toLocaleString('en-IN');
+            const imageUrl = product.image || product.imageUrl || product.photoUrl || 'https://via.placeholder.com/260x260?text=No+Image';
+            
+            productsHTML += `
+              <a href="index.html" class="product-card">
+                ${isFree ? `<div style="position:absolute; top:12px; right:12px; background:var(--success); color:#fff; padding:2px 8px; border-radius:12px; font-size:10px; font-weight:800; z-index:2;">FREE</div>` : ''}
+                <div class="card-image-box">
+                  <img src="${imageUrl}" alt="${title}" loading="lazy">
+                </div>
+                <div class="card-info">
+                  <h3 class="card-title">${title}</h3>
+                  <div class="product-price-section">
+                    <span class="product-price-discount">${displayPrice}</span>
+                    ${!isFree && originalPrice ? `<span class="product-price-original">₹${parseFloat(originalPrice).toLocaleString('en-IN')}</span>` : ''}
+                  </div>
+                  <button class="btn ${isFree ? 'btn-free' : ''}" style="pointer-events:none; padding: 10px; font-size: 13px;">View Details</button>
+                </div>
+              </a>
+            `;
+          });
+
+          // Inject HTML twice for infinite loop effect
+          sliderTrack.innerHTML = productsHTML + productsHTML;
+          
+          // Show speed controls
+          speedControls.style.display = 'flex';
+          
+          // FIX: Add animation class ONLY after a small delay ensuring DOM is fully rendered
+          setTimeout(() => {
+            sliderTrack.classList.add('scrolling');
+          }, 150);
+          
+        } else {
+          sliderTrack.innerHTML = '<p style="color: var(--text-muted);">No products currently available.</p>';
+        }
+      })
+      .catch((error) => {
+        console.error("Firebase fetch error:", error);
+        sliderTrack.innerHTML = '<p style="color: var(--danger);">Error fetching products.</p>';
+      });
+  </script>
 </body>
 </html>
